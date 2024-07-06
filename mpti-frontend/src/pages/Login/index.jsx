@@ -6,6 +6,7 @@ import { loginUser, updateErrorUser, updateMessageUser, updatePasswordUser, upda
 import { useEffect, useRef } from "react";
 import axios from "axios";
 
+import EgiRahayu from "../../assets/EgiRahayu.svg"
 
 
 export async function actionLogin() {
@@ -94,11 +95,11 @@ function Login() {
             <div className="bg-gradient-to-45 from-white to-[#a8f0bb] ">
                 <section className="flex min-h-screen justify-center w-full items-center flex-col lg:flex-row ">
                     <div className="flex items-center">
-                        <img src={PertaminaPNG} className="max-w-44 p-4" alt="" />
-                        <div>
+                        <img src={EgiRahayu} className="max-w-96 p-10" alt="" />
+                        {/* <div>
                             <h1 className="font-semibold text-3xl">Pangkalan LPG</h1>
                             <h1 className="font-semibold text-3xl">Egi Rahayu</h1>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="h-[40rem] w-0.5 bg-white rounded-md mx-10 hidden lg:block"></div>

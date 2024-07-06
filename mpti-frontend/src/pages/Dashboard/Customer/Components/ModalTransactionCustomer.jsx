@@ -8,7 +8,7 @@ function ModalTransactionCustomer() {
     return (
         <dialog id="customer_transaction_modal" className="modal">
             <div className="modal-box">
-                {!customerState.success ? (
+                {customerState.successTransaction ? (
                     <>
                         <div className="grid justify-items-center py-14">
                             <span className="material-symbols-outlined w-48 h-48 bg-[#4AAE64] text-9xl rounded-full flex justify-center items-center text-white">
@@ -77,7 +77,7 @@ function ModalTransactionCustomer() {
                                 close
                             </span>
                             <h2 className="font-bold text-2xl px-16 mt-12 text-center">Transaksi gagal </h2>
-                            <p className="px-16 text-center">{customerState.message}</p>
+                            <p className="px-16 text-center">{customerState.messageTransaction?.split(". ")[0]}</p>
                         </div>
                         <div className="modal-action">
 

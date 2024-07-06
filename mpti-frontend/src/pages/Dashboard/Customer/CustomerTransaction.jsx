@@ -90,7 +90,7 @@ function CustomerTransaction() {
                         <div className="card max-w-5xl bg-base-100 shadow-sm rounded-md overflow-x-auto">
                             <div className="card-body ">
                                 <h2 className="card-title">Jumlah Pembelian</h2>
-                                <input defaultValue={customerState.transactionData.countBuy} onChange={handleCountBuyInputChange} type="text" className="input" />
+                                <input defaultValue={customerState.transactionData.countBuy} onChange={handleCountBuyInputChange} type="text" className="input input-bordered" />
                             </div>
                         </div>
                     )}

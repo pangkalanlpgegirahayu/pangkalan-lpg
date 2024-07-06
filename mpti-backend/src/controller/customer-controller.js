@@ -30,7 +30,7 @@ const register = async (req, res, next) => {
 const customerType = async (req, res, next) => {
     try {
        
-        const result = await customerService.countType();
+        const result = await customerService.countTypeSell();
         res.status(200).json({
             ok: true,
             data: result,

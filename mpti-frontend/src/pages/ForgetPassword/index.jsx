@@ -8,6 +8,8 @@ import Pertamina from "../../assets/Pertamina.svg"
 import { useEffect } from "react";
 import ModalForgetPasswordChange from "./components/ModalForgetPasswordChange";
 
+import EgiRahayu from "../../assets/EgiRahayu.svg"
+
 export async function actionForgetPassword() {
     const user = JSON.parse(localStorage.getItem("user")||sessionStorage.getItem("user"));
 
@@ -40,7 +42,7 @@ function ForgetPassword() {
         <>
             <div className="bg-gradient-to-45">
                 <section className="flex min-h-screen justify-center items-center flex-col p-3">
-                    <img src={Pertamina} className="fixed w-52 -top-5 left-3" alt="" />
+                    <img src={EgiRahayu} className="fixed max-w-40 top-7 left-7" alt="" />
 
                     <div className="card w-full max-w-lg bg-base-100 shadow-xl">
                         {forgetPasswordState.progress === FORGET_PASSWORD_PROGRESS.EMAIL && <ForgetPasswordEmail />}

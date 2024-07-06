@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { Form, useNavigate } from "react-router-dom"
-import { addStok, gasStok, historyStok, updateErrorStok, updateInformationStok, updateInputDateStok, updateMessageStok, updateSuccessStok } from "../../../../state/StokSlice";
+import { addStok, gasStok, historyStok, updateErrorStok, updateInformationStok, updateInputDateStok, updateMessageStok, updateSuccessAddStok, updateSuccessStok } from "../../../../state/StokSlice";
 import { useEffect } from "react";
 
 function ModalAddStock() {
@@ -14,7 +14,7 @@ function ModalAddStock() {
     const handleCountStokInputChange = (event) => {
         event.target.value = event.target.value.replace(/[^0-9]/g, '');
         event.target.value = event.target.value.replace(/^(0)/g, '');
-        
+
         dispatch(updateCountStok(event.target.value))
     }
     const handleInformationInputChange = (event) => {
@@ -39,8 +39,8 @@ function ModalAddStock() {
 
         dispatch(addStok(prepData)).then(result => {
             if (!result.error) {
-                
-                dispatch(updateMessageStok("Berhasil menambah stok"))
+
+                // dispatch(updateMessageStok("Berhasil menambah stok"))
                 let prepData = {
                     token: userState.data.token
                 }
@@ -52,13 +52,7 @@ function ModalAddStock() {
                     endDate: stokState.historyData?.endDate
                 }
                 dispatch(historyStok(prepData))
-                
-            } else {
-                
-                dispatch(updateSuccessStok(false));
-                document.getElementById('stok_add_modal').close()
-                
-            }
+            } 
         })
 
     }
@@ -68,7 +62,7 @@ function ModalAddStock() {
             {/* You can open the modal using document.getElementById('ID').showModal() method */}
             <dialog id="stok_add_modal" className="modal">
                 <div className="modal-box">
-                    {stokState.success ? (
+                    {stokState.successAdd ? (
                         <div className="grid justify-items-center py-14">
                             <span className="material-symbols-outlined w-48 h-48 bg-[#4AAE64] text-9xl rounded-full flex justify-center items-center text-white">
                                 check
@@ -78,6 +72,23 @@ function ModalAddStock() {
                     ) : (
                         <>
                             <h3 className="font-bold text-lg mb-4">Restok</h3>
+                            {stokState.successAdd === false ? (
+                                <div role="alert" className="alert alert-warning mb-3">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-6 w-6 shrink-0 stroke-current"
+                                        fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+
+                                    <span>{stokState.messageAdd?.split(". ")[0]}</span>
+                                </div>
+                            ) : ""}
                             <Form className="grid gap-5" onSubmit={handleSubmitNewStok}>
                                 <div className="grid items-center md:grid-cols-2">
                                     <h2 className="font-medium">Tanggal</h2>
@@ -95,9 +106,9 @@ function ModalAddStock() {
 
                                 </div>
                                 <div className="modal-action">
-                                    
+
                                     <button className="btn" type="button" onClick={() => document.getElementById('stok_add_modal').close()}>Batal</button>
-                                    
+
                                     <button className="btn bg-[#4AAE64] text-white hover:text-black" disabled={stokState.loading}>{stokState.loading ? <span className="loading loading-spinner"></span> : ""}Restok</button>
                                 </div>
                             </Form>

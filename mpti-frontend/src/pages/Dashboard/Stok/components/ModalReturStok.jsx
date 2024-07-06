@@ -49,7 +49,7 @@ function ModalReturStok() {
         dispatch(gasRetur(prepData)).then(result => {
             if (!result.error) {
                 
-                dispatch(updateMessageStok("Berhasil menambah stok"))
+                // dispatch(updateMessageStok("Berhasil menambah stok"))
                 let prepData = {
                     token: userState.data.token
                 }
@@ -62,12 +62,7 @@ function ModalReturStok() {
                 }
                 dispatch(historyStok(prepData))
                 
-            } else {
-                
-                dispatch(updateSuccessStok(false));
-                // document.getElementById('stok_retur_modal').close()
-                
-            }
+            } 
         })
     }
     return (
@@ -97,9 +92,7 @@ function ModalReturStok() {
                                         d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                 </svg>
 
-                                <span>{stokState.messageRetur.split(". ")[0]}</span>
-
-
+                                <span>{stokState.messageRetur?.split(". ")[0]}</span>
                             </div>
                         ) : ""}
                         <Form className="grid gap-5" onSubmit={handleSubmitRetur}>

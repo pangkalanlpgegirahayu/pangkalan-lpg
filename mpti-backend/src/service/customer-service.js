@@ -65,11 +65,11 @@ const cekNik = async (request) => {
     return resultUser.at(0)
 }
 
-const countType = async (request) => {
-    let query = "SELECT COUNT(*) AS jumlah FROM `konsumen` WHERE `tipe` = 'RUMAH_TANGGA'";
+const countTypeSell = async (request) => {
+    let query = "SELECT SUM(a.jumlah) AS jumlah FROM `detail_pembelian` AS a JOIN `pembelian_gas` AS b JOIN `konsumen` AS c ON a.id_pembelian = b.id AND b.id_konsumen = c.id WHERE c.tipe = 'RUMAH_TANGGA'";
     const [result, field] = await databaseQuery(query);
 
-    query = "SELECT COUNT(*) AS jumlah FROM `konsumen` WHERE `tipe` = 'USAHA'";
+    query = "SELECT SUM(a.jumlah) AS jumlah FROM `detail_pembelian` AS a JOIN `pembelian_gas` AS b JOIN `konsumen` AS c ON a.id_pembelian = b.id AND b.id_konsumen = c.id WHERE c.tipe = 'USAHA'";
     const [result2, field2] = await databaseQuery(query);
 
     return {
@@ -127,5 +127,5 @@ const register = async (request) => {
 export default {
     cekNik,
     register,
-    countType
+    countTypeSell
 }

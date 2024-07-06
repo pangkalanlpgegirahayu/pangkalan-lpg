@@ -105,6 +105,8 @@ const CustomerSlice = createSlice({
         message: null,
         success: null,
         successRegister: null,
+        successTransaction: null,
+        messageTransaction: null,
         data: {
             nik: null,
             name: null,
@@ -184,20 +186,21 @@ const CustomerSlice = createSlice({
             })
             .addCase(transactionCustomer.fulfilled, (state, action) => {
                 state.loading = false
-                state.error = false
-                state.success = true
-                state.message = "Berhasil menambah transaksi"
+                // state.error = false
+                state.successTransaction = true
+                state.messageTransaction = "Berhasil menambah transaksi"
                 state.transactionDataDone = action.payload.data
                 state.data.nik = null
                 state.data.name = null
                 state.data.address = null
                 state.data.type = 'RUMAH_TANGGA'
+                state.transactionData.countBuy = 1
             })
             .addCase(transactionCustomer.rejected, (state, action) => {
                 state.loading = false
-                state.error = true
-                state.success = false
-                state.message = action.payload
+                // state.error = true
+                state.successTransaction = false
+                state.messageTransaction = action.payload
             })
             .addCase(customerRegister.pending, (state, action) => {
                 state.loading = true

@@ -39,11 +39,12 @@ function DashboardContent() {
                 'Authorization': prepData.token
             }
         }).then(result => {
-            360 - 360 * (result.data.data.usaha / (result.data.data.rumahTangga + result.data.data.usaha)) - 2
+            
             setCustomerHouse(result.data.data.rumahTangga)
             setCustomerBusiness(result.data.data.usaha)
+            
             setCustomerType({
-                usaha: 360 - 360 * (result.data.data.usaha / (result.data.data.rumahTangga + result.data.data.usaha)) - 4,
+                usaha: 360 - 360 * (Number(result.data.data.usaha) / (Number(result.data.data.rumahTangga) + Number(result.data.data.usaha))) - 4,
             })
         })
 
@@ -67,12 +68,12 @@ function DashboardContent() {
                     <p className="py-1.5 px-3 bg-[#f9fafb]">Distribusi Konsumen</p>
                     <div className="card-body max-w-3xl flex-col pt-4 sm:flex-row lg:pt-0 lg:flex-row gap-3 justify-around items-center h-96 md:h-full overflow-auto">
                         <div className="w-48 max-h-48  h-full relative block">
-                            <div className={`radial-progress absolute text-[#4AAE64] font-bold text-4xl`} style={{ "--value": (customerHouse / (customerBusiness + customerHouse)) * 100, "--size": "12rem" }} role="progressbar">
+                            <div className={`radial-progress absolute text-[#4AAE64] font-bold text-4xl`} style={{ "--value": (Number(customerHouse) / (Number(customerBusiness) + Number(customerHouse))) * 100, "--size": "12rem" }} role="progressbar">
 
-                                {customerHouse + customerBusiness}
+                                {Number(customerHouse) + Number(customerBusiness)}
                             </div>
 
-                            <div className={(`radial-progress absolute text-[#a6e8b8]`)} style={{ "--value": ((customerBusiness / (customerBusiness + customerHouse)) * 100), "--size": "12rem", "rotate": `${customerType.usaha}deg` }} role="progressbar">
+                            <div className={(`radial-progress absolute text-[#a6e8b8]`)} style={{ "--value": ((Number(customerBusiness) / (Number(customerBusiness) + Number(customerHouse))) * 100), "--size": "12rem", "rotate": `${customerType.usaha}deg` }} role="progressbar">
 
                             </div>
                         </div>

@@ -5,6 +5,7 @@ import { updateErrorStok } from '../../state/StokSlice';
 import axios from 'axios';
 
 import PertaminaPNG from "../../assets/PertaminaPNG.png"
+import EgiRahayu from "../../assets/EgiRahayu.svg"
 
 import { logoutUser, updateSuccessLoginUser, updateSuccessLogoutUser } from '../../state/UserSlice';
 
@@ -95,7 +96,7 @@ function Dashboard() {
                                 </label>
                             </div>
                             <div className="flex-1">
-                                <Link className="btn btn-ghost text-xl lg:hidden truncate"><img src={PertaminaPNG} className="w-6" alt="" /> <span className="sm:block hidden">Pangkalan LPG Egi Rahayu</span> </Link>
+                                <Link className="btn btn-ghost text-xl lg:hidden truncate"><img src={EgiRahayu} className="w-28" alt="" /></Link>
                             </div>
                             <div className="flex-none hidden md:block">
                                 <button className="btn btn-ghost" onClick={logout}>
@@ -118,8 +119,8 @@ function Dashboard() {
                             {/* Sidebar content here */}
                             <li className="lg:block hidden">
                                 <div>
-                                    <img src={PertaminaPNG} className="w-16" alt="" />
-                                    <p className="font-medium p-3">Pangkalan LPG Egi Rahayu</p>
+                                    <img src={EgiRahayu} className="max-w-40" alt="" />
+                                    {/* <p className="font-medium p-3">Pangkalan LPG Egi Rahayu</p> */}
                                 </div>
                             </li>
                             <li>
