@@ -193,6 +193,10 @@ const stok = async (request) => {
     let params = [namaGas];
     const [resultData, field] = await databaseQuery(query, params)
 
+    if(resultData.length<1){
+        throw new ResponseError(400, "Tidak ada data")
+    }
+
     query = "SELECT harga_beli, harga_jual FROM `gas` WHERE nama=? ORDER BY id DESC LIMIT 1";
     params = [namaGas];
     const [resultData2, field2] = await databaseQuery(query, params)

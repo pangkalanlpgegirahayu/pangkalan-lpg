@@ -65,9 +65,13 @@ const countType = async (request) => {
     let query = "SELECT tipe, COUNT(*) AS jumlah FROM `konsumen` GROUP BY tipe";
     let [result, field] = await databaseQuery(query);
 
+    if(result.length<1){
+        throw new ResponseError(400, "Tidak ada data")
+    }
+
     return{
-        rumahTangga: result.at(0).jumlah,
-        usaha: result.at(1).jumlah
+        rumahTangga: result.at(0).jumlah??0,
+        usaha: result.at(1).jumlah??0
     }
 }
 
