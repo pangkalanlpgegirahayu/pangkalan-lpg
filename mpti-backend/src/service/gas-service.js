@@ -35,6 +35,10 @@ const transaction = async (user, request) => {
     params = [namaGas];
     const [resultData3, field3] = await databaseQuery(query, params)
 
+    if(!resultData3.at(0)){
+        throw new ResponseError(400, "Tidak ada stok");
+    }
+
     if(resultData3.at(0).sisa<transactionRequest.countBuy){
         throw new ResponseError(400, "Jumlah pembelian melebihi stok");
     }
@@ -50,6 +54,20 @@ const transaction = async (user, request) => {
         if(resultData7.at(0).jumlah == 1){
             throw new ResponseError(400, "Pelanggan sudah melakukan pembelian maksimal");
         }
+
+        query = "SELECT SUM(a.jumlah) AS jumlah FROM `detail_pembelian` AS a JOIN `pembelian_gas` AS b JOIN `konsumen` AS c ON a.id_pembelian = b.id AND b.id_konsumen = c.id WHERE c.tipe = 'RUMAH_TANGGA'";
+        // params = [resultData.at(0).id, resultData3.at(0).id];
+        const [resultData8, field8] = await databaseQuery(query);
+
+        const dataHouse = !resultData8.at(0) ? 0 : resultData8.at(0).jumlah
+
+        if(((!resultData8.at(0) ? 0 : resultData8.at(0).jumlah)/resultData3.at(0).jumlah*100) >= 80){
+            throw new ResponseError(400, "Pembelian Rumah Tangga sudah mencapai maksimal");
+        }
+
+        if((dataHouse+transactionRequest.countBuy)/resultData3.at(0).jumlah > 80){
+            throw new ResponseError(400, "Jumlah pembelian terlalu besar");
+        }
     }
 
     if(resultData.at(0).tipe == 'USAHA'){
@@ -62,6 +80,22 @@ const transaction = async (user, request) => {
 
         if(resultData7.at(0).jumlah == 5){
             throw new ResponseError(400, "Pelanggan sudah melakukan pembelian maksimal");
+        }
+
+        query = "SELECT SUM(a.jumlah) AS jumlah FROM `detail_pembelian` AS a JOIN `pembelian_gas` AS b JOIN `konsumen` AS c ON a.id_pembelian = b.id AND b.id_konsumen = c.id WHERE c.tipe = 'USAHA'";
+        // params = [resultData.at(0).id, resultData3.at(0).id];
+        const [resultData8, field8] = await databaseQuery(query);
+
+        const dataBusiness = !resultData8.at(0) ? 0 : resultData8.at(0).jumlah
+
+        
+
+        if(((!resultData8.at(0) ? 0 : resultData8.at(0).jumlah)/resultData3.at(0).jumlah*100) >= 20){
+            throw new ResponseError(400, "Pembelian Usaha sudah mencapai maksimal");
+        }
+
+        if((dataBusiness+transactionRequest.countBuy)/resultData3.at(0).jumlah > 20){
+            throw new ResponseError(400, "Jumlah pembelian terlalu besar");
         }
     }
 

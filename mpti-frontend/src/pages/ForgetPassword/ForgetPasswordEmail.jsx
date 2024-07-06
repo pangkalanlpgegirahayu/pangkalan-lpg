@@ -30,15 +30,6 @@ function ForgetPasswordEmail() {
         dispatch(forgetPasswordSendEmail(prepData))
     }
 
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         if (forgetPasswordState.error) {
-    //             dispatch(updateErrorForgotPassword(false))
-    //         }
-    //     }, 5000)
-    //     return () => clearTimeout(timer)
-    // }, [forgetPasswordState.error])
-
     return (
         <Form onSubmit={handleEmailSubmit} className="card-body items-center">
             <h2 className="text-[2em] font-semibold text-center text-[#4AAE64]">Lupa Kata Sandi</h2>
@@ -58,7 +49,7 @@ function ForgetPasswordEmail() {
                 </span>
             </label>
 
-            <Link to="/login" className="text-center text-sm">Ingat Kata Sandi?</Link>
+            <Link to="/login" className="text-center text-sm hover:text-[#4AAE64] underline">Ingat Kata Sandi?</Link>
             <div className="card-actions justify-center w-full p-4">
                 <button type="submit" className="btn rounded-full w-full max-w-80 bg-[#4AAE64] text-white hover:text-black" disabled={forgetPasswordState.loading}>
                     <span className={forgetPasswordState.loading ? "loading loading-spinner" : ""}></span>

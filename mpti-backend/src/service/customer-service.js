@@ -47,6 +47,16 @@ const cekNik = async (request) => {
         if (resultCount.at(0).jumlah == 1) {
             throw new ResponseError(400, "Pelanggan sudah melakukan pembelian maksimal")
         }
+
+        query = "SELECT SUM(a.jumlah) AS jumlah FROM `detail_pembelian` AS a JOIN `pembelian_gas` AS b JOIN `konsumen` AS c ON a.id_pembelian = b.id AND b.id_konsumen = c.id WHERE c.tipe = 'RUMAH_TANGGA'";
+        // params = [resultData.at(0).id, resultData3.at(0).id];
+        const [resultData4, field4] = await databaseQuery(query);
+
+        const dataHouse = !resultData4.at(0) ? 0 : resultData4.at(0).jumlah
+
+        if(((!resultData4.at(0) ? 0 : resultData4.at(0).jumlah)/resultData2.at(0).jumlah*100) >= 80){
+            throw new ResponseError(400, "Pembelian Rumah Tangga sudah mencapai maksimal");
+        }
     }
 
     if (resultUser.at(0).tipe == "USAHA") {
@@ -59,6 +69,16 @@ const cekNik = async (request) => {
 
         if (resultCount.at(0).jumlah == 5) {
             throw new ResponseError(400, "Pelanggan sudah melakukan pembelian maksimal")
+        }
+
+        query = "SELECT SUM(a.jumlah) AS jumlah FROM `detail_pembelian` AS a JOIN `pembelian_gas` AS b JOIN `konsumen` AS c ON a.id_pembelian = b.id AND b.id_konsumen = c.id WHERE c.tipe = 'USAHA'";
+        // params = [resultData.at(0).id, resultData3.at(0).id];
+        const [resultData4, field4] = await databaseQuery(query);
+
+        const dataHouse = !resultData4.at(0) ? 0 : resultData4.at(0).jumlah
+
+        if(((!resultData4.at(0) ? 0 : resultData4.at(0).jumlah)/resultData2.at(0).jumlah*100) >= 20){
+            throw new ResponseError(400, "Pembelian Usaha sudah mencapai maksimal");
         }
     }
 

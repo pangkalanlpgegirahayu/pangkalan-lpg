@@ -136,7 +136,7 @@ function Login() {
                                     </label>
                                 </div>
 
-                                <Link to="/lupa-sandi" className="max-w-96 my-auto text-end text-sm place-self-end mr-5">Lupa Kata Sandi?</Link>
+                                <Link to="/lupa-sandi" className="max-w-96 my-auto text-end text-sm place-self-end mr-5 hover:text-[#4AAE64] underline">Lupa Kata Sandi?</Link>
                             </div>
                             <div className="card-actions justify-center w-full p-4">
                                 <button type="submit" className="btn rounded-full w-full max-w-80 bg-[#4AAE64] text-white hover:text-black" disabled={userState.loading}>
