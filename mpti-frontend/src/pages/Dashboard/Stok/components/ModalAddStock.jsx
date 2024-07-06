@@ -39,8 +39,6 @@ function ModalAddStock() {
 
         dispatch(addStok(prepData)).then(result => {
             if (!result.error) {
-
-                // dispatch(updateMessageStok("Berhasil menambah stok"))
                 let prepData = {
                     token: userState.data.token
                 }
