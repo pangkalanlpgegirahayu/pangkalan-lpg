@@ -161,22 +161,7 @@ function DashboardContent() {
                                     </tbody>
                                 </table>
                             </div>
-                            {/* <div className="card-actions justify-center">
-                                <div className="join">
-                                    {
-                                        stokState.historyData.paging?.prev &&
-                                        <button className="join-item btn" onClick={handleHistoryPrevPage}>«</button>
-                                    }
-
-                                    <button className="join-item btn">{stokState.historyData.currentPage}</button>
-
-                                    {
-                                        stokState.historyData.paging?.next &&
-                                        <button className="join-item btn" onClick={handleHistoryNextPage}>»</button>
-                                    }
-
-                                </div>
-                            </div> */}
+                           
                         </div>
                     </div>
                 </div>

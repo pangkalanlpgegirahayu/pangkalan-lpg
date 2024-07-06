@@ -44,7 +44,7 @@ function Stok() {
         }, 60000)
     }, [])
     useEffect(() => {
-        console.log("ini berubah pas modal")
+        
         const timer = setTimeout(() => {
             if (stokState.success) {
                 
@@ -59,7 +59,7 @@ function Stok() {
     
 
     useEffect(() => {
-        console.log("ini berubah pas modal")
+       
         const timer = setTimeout(() => {
             if (stokState.successPriceChange) {
                 document.getElementById('stok_price_modal').close()
@@ -70,7 +70,7 @@ function Stok() {
     }, [stokState.successPriceChange])
 
     useEffect(() => {
-        console.log("ini berubah pas modal")
+        
         const timer = setTimeout(() => {
             if (stokState.successRetur) {
                 document.getElementById('stok_retur_modal').close()

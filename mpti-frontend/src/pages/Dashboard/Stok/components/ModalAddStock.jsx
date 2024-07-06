@@ -39,7 +39,7 @@ function ModalAddStock() {
 
         dispatch(addStok(prepData)).then(result => {
             if (!result.error) {
-                // dispatch(updateSuccessStok(true));
+                
                 dispatch(updateMessageStok("Berhasil menambah stok"))
                 let prepData = {
                     token: userState.data.token
@@ -51,9 +51,7 @@ function ModalAddStock() {
                     startDate: stokState.historyData?.startDate,
                     endDate: stokState.historyData?.endDate
                 }
-                dispatch(historyStok(prepData)).then(result=>{
-                    console.log("this execute or nah")
-                })
+                dispatch(historyStok(prepData))
                 
             } else {
                 
