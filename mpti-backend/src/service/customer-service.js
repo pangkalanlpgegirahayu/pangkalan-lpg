@@ -62,16 +62,15 @@ const cekNik = async (request) => {
 }
 
 const countType = async (request) => {
-    let query = "SELECT tipe, COUNT(*) AS jumlah FROM `konsumen` GROUP BY tipe";
-    let [result, field] = await databaseQuery(query);
+    let query = "SELECT COUNT(*) AS jumlah FROM `konsumen` WHERE `tipe` = 'RUMAH_TANGGA'";
+    const [result, field] = await databaseQuery(query);
 
-    if(result.length<1){
-        throw new ResponseError(400, "Tidak ada data")
-    }
+    query = "SELECT COUNT(*) AS jumlah FROM `konsumen` WHERE `tipe` = 'USAHA'";
+    const [result2, field2] = await databaseQuery(query);
 
     return{
-        rumahTangga: result.at(0).jumlah??0,
-        usaha: result.at(1).jumlah??0
+        rumahTangga: result.at(0).jumlah?result.at(0).jumlah:0,
+        usaha: result2.at(0).jumlah?result2.at(0).jumlah:0
     }
 }
 

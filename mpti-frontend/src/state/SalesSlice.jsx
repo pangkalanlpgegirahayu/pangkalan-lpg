@@ -18,19 +18,19 @@ export const getSales = createAsyncThunk(
                 params: {
                     page: data.currentPage,
                     size: 5,
-                    startDate: data.startDate==''?null:data.startDate,
-                    endDate: data.endDate==''?null:data.endDate
+                    startDate: data.startDate == '' ? null : data.startDate,
+                    endDate: data.endDate == '' ? null : data.endDate
                 }
             })
 
             const result = await response.data
-            
+
             return result;
         } catch (error) {
             if (error.response) {
                 const message = error.response.data.errors;
                 return thunkAPI.rejectWithValue(message)
-            }else{
+            } else {
                 return thunkAPI.rejectWithValue("Network error")
             }
         }
@@ -48,19 +48,19 @@ export const getAllHistorySales = createAsyncThunk(
                     'Authorization': data.token
                 },
                 params: {
-                    startDate: data.startDate==''?null:data.startDate,
-                    endDate: data.endDate==''?null:data.endDate
+                    startDate: data.startDate == '' ? null : data.startDate,
+                    endDate: data.endDate == '' ? null : data.endDate
                 }
             })
 
             const result = await response.data
-            
+
             return result;
         } catch (error) {
             if (error.response) {
                 const message = error.response.data.errors;
                 return thunkAPI.rejectWithValue(message)
-            }else{
+            } else {
                 return thunkAPI.rejectWithValue("Network error")
             }
         }
@@ -73,6 +73,7 @@ const SalesSlice = createSlice({
         loading: null,
         error: null,
         message: null,
+        successGetData: null,
         data: {
             modal: null,
             countSold: null,
@@ -104,6 +105,9 @@ const SalesSlice = createSlice({
         updateCurrentPageSales: (state, action) => {
             state.historyData.currentPage = action.payload;
         },
+        updatesuccessGetDataSales: (state, action) => {
+            state.successGetData = action.payload;
+        }
     },
     extraReducers: builder =>
         builder
@@ -114,6 +118,7 @@ const SalesSlice = createSlice({
             .addCase(getSales.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = false;
+                state.successGetData = true;
                 state.historyData.list = action.payload.data;
                 state.historyData.paging = action.payload.paging;
                 state.data.countSold = action.payload.dataSold.countSold;
@@ -123,6 +128,7 @@ const SalesSlice = createSlice({
             .addCase(getSales.rejected, (state, action) => {
                 state.loading = false;
                 state.error = true;
+                state.successGetData = false;
                 state.data.revenue = 0;
                 state.data.countSold = 0;
                 state.data.modal = 0;
@@ -135,6 +141,7 @@ const SalesSlice = createSlice({
             .addCase(getAllHistorySales.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = false;
+                state.successGetData = true;
                 // state.historyData.list = action.payload.data;
                 // state.historyData.paging = action.payload.paging;
                 state.dataPrint = action.payload.data
@@ -144,6 +151,7 @@ const SalesSlice = createSlice({
             .addCase(getAllHistorySales.rejected, (state, action) => {
                 state.loading = false;
                 state.error = true;
+                state.successGetData = false;
                 state.data.revenue = 0;
                 state.data.countSold = 0;
                 state.message = action.payload;
@@ -151,5 +159,5 @@ const SalesSlice = createSlice({
 })
 
 
-export const {updateErrorSales, updateCurrentPageSales, updateEndDateSales, updateStartDateSales, updateMessageSales} = SalesSlice.actions
+export const { updatesuccessGetDataSales, updateErrorSales, updateCurrentPageSales, updateEndDateSales, updateStartDateSales, updateMessageSales } = SalesSlice.actions
 export default SalesSlice.reducer

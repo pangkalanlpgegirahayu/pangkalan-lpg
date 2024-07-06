@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, Outlet, redirect, useLocation, useNavigate } from 'react-router-dom'
-import { updateErrorStok} from '../../state/StokSlice';
+import { updateErrorStok } from '../../state/StokSlice';
 import axios from 'axios';
 
 import PertaminaPNG from "../../assets/PertaminaPNG.png"
@@ -11,7 +11,7 @@ import { logoutUser, updateSuccessLoginUser, updateSuccessLogoutUser } from '../
 
 
 export async function actionDashboard() {
-    const user = JSON.parse(localStorage.getItem("user")||sessionStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user") || sessionStorage.getItem("user"));
 
     try {
         const response = await axios.get(import.meta.env.VITE_APP_API_URI, {
@@ -31,6 +31,7 @@ function Dashboard() {
     const drawerRef = useRef(null);
     const userState = useSelector(state => state.user);
     const stokState = useSelector(state => state.stok);
+    const salesState = useSelector(state => state.sales);
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
@@ -212,7 +213,7 @@ function Dashboard() {
             </div >
 
             {
-                userState.successLogin===true &&
+                userState.successLogin === true &&
                 <div className="toast toast-end">
                     <div role="alert" className="alert alert-success">
                         <svg
@@ -232,7 +233,7 @@ function Dashboard() {
             }
 
             {
-                userState.successLogout===false &&
+                userState.successLogout === false &&
                 <div className="toast toast-end">
                     <div role="alert" className="alert alert-error">
                         <svg
@@ -244,12 +245,13 @@ function Dashboard() {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <span>Gagal Logout</span>
                     </div>
                 </div>
             }
+            
 
         </>
     )
