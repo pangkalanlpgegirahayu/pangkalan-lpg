@@ -66,7 +66,6 @@ function CustomerRegister() {
         
 
         dispatch(customerRegister(prepData)).then(result=>{
-            
             document.getElementById('customer_register_modal').showModal()
         })
     }
@@ -79,17 +78,6 @@ function CustomerRegister() {
         }, 5000)
         return () => clearTimeout(timer)
     }, [customerState.error == true])
-
-    useEffect(()=>{
-        axios.get(import.meta.env.VITE_APP_API_URI, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": userState.data.token
-            }
-        }).catch(error=>{
-            navigate("/login")
-        })
-    }, [])
 
     return (
         <>
@@ -156,7 +144,7 @@ function CustomerRegister() {
                                         <input onChange={handleCustomerTypeInputChange} value="USAHA" type="radio" name="typeCustomer" className="radio" />
                                         <span className="label-text">Usaha Mikro</span>
                                     </label>
-                                    
+                                    <span className="label-text">Maksimum pembelian 5/pengiriman</span>
                                 </div>
                             </div>
 

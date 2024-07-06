@@ -6,7 +6,7 @@ function ModalRegisterCustomer() {
     return (
         <dialog id="customer_register_modal" className="modal">
             <div className="modal-box">
-                {!customerState.success ? (
+                {customerState.successRegister ? (
                     <>
                         <div className="grid justify-items-center py-14">
                             <span className="material-symbols-outlined w-48 h-48 bg-[#4AAE64] text-9xl rounded-full flex justify-center items-center text-white">

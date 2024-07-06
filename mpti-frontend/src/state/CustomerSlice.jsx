@@ -18,15 +18,15 @@ export const customerCheckNik = createAsyncThunk(
                     'Authorization': data.token
                 },
             });
-            
+
             const result = await response.data;
-            
+
             return result;
         } catch (error) {
-            if(error.response){
+            if (error.response) {
                 const message = error.response.data.errors;
                 return thunkAPI.rejectWithValue(message)
-            }else{
+            } else {
                 return thunkAPI.rejectWithValue("Network error")
             }
         }
@@ -41,7 +41,7 @@ export const customerRegister = createAsyncThunk(
             nik: data.nik,
             name: data.name,
             address: data.address,
-            type: data.type=="RUMAH_TANGGA"?1:data.type=="USAHA"?2:"invalid",
+            type: data.type == "RUMAH_TANGGA" ? 1 : data.type == "USAHA" ? 2 : "invalid",
             ktp: data.ktp,
         }
         try {
@@ -51,15 +51,15 @@ export const customerRegister = createAsyncThunk(
                     'Authorization': data.token
                 },
             });
-            
+
             const result = await response.data;
-            
+
             return result;
         } catch (error) {
-            if(error.response){
+            if (error.response) {
                 const message = error.response.data.errors;
                 return thunkAPI.rejectWithValue(message)
-            }else{
+            } else {
                 return thunkAPI.rejectWithValue("Network error")
             }
         }
@@ -82,15 +82,15 @@ export const transactionCustomer = createAsyncThunk(
                     'Authorization': data.token
                 },
             });
-            
+
             const result = await response.data;
-            
+
             return result;
         } catch (error) {
-            if(error.response){
+            if (error.response) {
                 const message = error.response.data.errors;
                 return thunkAPI.rejectWithValue(message)
-            }else{
+            } else {
                 return thunkAPI.rejectWithValue("Network error")
             }
         }
@@ -104,6 +104,7 @@ const CustomerSlice = createSlice({
         error: null,
         message: null,
         success: null,
+        successRegister: null,
         data: {
             nik: null,
             name: null,
@@ -121,34 +122,37 @@ const CustomerSlice = createSlice({
         transactionDataDone: {}
     },
     reducers: {
-        updateSuccessCustomer: (state, action)=>{
+        updateSuccessCustomer: (state, action) => {
             state.success = action.payload;
         },
-        updateCountBuyCustomer: (state, action)=>{
+        updateSuccessRegisterCustomer: (state, action) => {
+            state.successRegister = action.payload;
+        },
+        updateCountBuyCustomer: (state, action) => {
             state.transactionData.countBuy = action.payload;
         },
-        updateNikCustomer: (state, action)=>{
+        updateNikCustomer: (state, action) => {
             state.data.nik = action.payload;
         },
-        updateInputDateCustomer: (state, action)=>{
+        updateInputDateCustomer: (state, action) => {
             state.data.inputDate = action.payload;
         },
-        updateErrorCustomer: (state, action)=> {
+        updateErrorCustomer: (state, action) => {
             state.error = action.payload
         },
-        updateMessageCustomer: (state, action)=> {
+        updateMessageCustomer: (state, action) => {
             state.message = action.payload
         },
-        updateNameCustomer: (state, action)=> {
+        updateNameCustomer: (state, action) => {
             state.data.name = action.payload
         },
-        updateAddressCustomer: (state, action)=> {
+        updateAddressCustomer: (state, action) => {
             state.data.address = action.payload
         },
-        updateTypeCustomer: (state, action)=> {
+        updateTypeCustomer: (state, action) => {
             state.data.type = action.payload
         },
-        updateKtpCustomer: (state, action)=> {
+        updateKtpCustomer: (state, action) => {
             state.data.ktp.ktpSource = action.payload.ktpSource
             state.data.ktp.ktpName = action.payload.ktpName
         }
@@ -163,7 +167,7 @@ const CustomerSlice = createSlice({
                 state.loading = false
                 state.error = false
                 state.success = true
-                
+
                 state.data.nik = action.payload.data.nik
                 state.data.name = action.payload.data.nama
                 state.data.type = action.payload.data.tipe
@@ -203,7 +207,7 @@ const CustomerSlice = createSlice({
                 state.loading = false
                 state.error = false
                 state.message = action.payload
-                state.success = true
+                state.successRegister = true
                 // state.data.nik = null
                 // state.data.name = null
                 // state.data.address = null
@@ -213,10 +217,10 @@ const CustomerSlice = createSlice({
                 state.loading = false
                 state.error = true
                 state.message = action.payload
-                state.success = false
+                state.successRegister = false
             })
     }
 })
 
-export const {updateSuccessCustomer, updateCountBuyCustomer, updateNikCustomer, updateKtpCustomer,updateNameCustomer, updateAddressCustomer, updateInputDateCustomer, updateErrorCustomer, updateMessageCustomer, updateTypeCustomer } = CustomerSlice.actions
+export const { updateSuccessRegisterCustomer, updateSuccessCustomer, updateCountBuyCustomer, updateNikCustomer, updateKtpCustomer, updateNameCustomer, updateAddressCustomer, updateInputDateCustomer, updateErrorCustomer, updateMessageCustomer, updateTypeCustomer } = CustomerSlice.actions
 export default CustomerSlice.reducer

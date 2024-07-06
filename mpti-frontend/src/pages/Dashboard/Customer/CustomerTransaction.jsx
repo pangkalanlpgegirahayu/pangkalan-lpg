@@ -18,15 +18,6 @@ function CustomerTransaction() {
             return navigate("/pelanggan")
         }
 
-        axios.get(import.meta.env.VITE_APP_API_URI, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": userState.data.token
-            }
-        }).catch(error=>{
-            navigate("/login")
-        })
-
         const prepData = {
             token: userState.data.token
         }
