@@ -23,6 +23,7 @@ export async function actionDashboard() {
         const result = await response.data;
         return null
     } catch (error) {
+        localStorage.removeItem("user")||sessionStorage.removeItem("user")
         return redirect("/login");
     }
 }

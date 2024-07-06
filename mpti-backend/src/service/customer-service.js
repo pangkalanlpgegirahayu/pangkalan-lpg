@@ -20,7 +20,7 @@ const cekNik = async (request) => {
     params = [namaGas];
     const [resultData3, field3] = await databaseQuery(query, params)
 
-    if(resultData3.length == 0){
+    if (resultData3.length == 0) {
         throw new ResponseError(400, "Harga belum di set");
     }
 
@@ -28,31 +28,35 @@ const cekNik = async (request) => {
     params = [namaGas];
     const [resultData2, field2] = await databaseQuery(query, params)
 
-    if(resultData2.at(0).sisa == 0){
+    if (!resultData2.at(0)) {
+        throw new ResponseError(400, "Stok belum diperbarui")
+    }
+
+    if (resultData2.at(0).sisa==0) {
         throw new ResponseError(400, "Stok habis")
     }
 
     if (resultUser.at(0).tipe == "RUMAH_TANGGA") {
-        
+
         query = "SELECT count(*) AS jumlah FROM pembelian_gas AS a JOIN detail_pembelian AS b ON a.id = b.id_pembelian WHERE a.id_konsumen = ? AND b.id_detail_pengiriman = ?"
-        
+
         params = [resultUser.at(0).id, resultData2.at(0).id]
-        
+
         let [resultCount, fieldCekup] = await databaseQuery(query, params);
-        
+
         if (resultCount.at(0).jumlah == 1) {
             throw new ResponseError(400, "Pelanggan sudah melakukan pembelian maksimal")
         }
     }
 
     if (resultUser.at(0).tipe == "USAHA") {
-        
+
         query = "SELECT SUM(b.jumlah) AS jumlah FROM pembelian_gas AS a JOIN detail_pembelian AS b ON a.id = b.id_pembelian WHERE a.id_konsumen = ? AND b.id_detail_pengiriman = ?"
-        
+
         params = [resultUser.at(0).id, resultData2.at(0).id]
-        
+
         let [resultCount, fieldCekup] = await databaseQuery(query, params);
-        
+
         if (resultCount.at(0).jumlah == 5) {
             throw new ResponseError(400, "Pelanggan sudah melakukan pembelian maksimal")
         }
@@ -68,14 +72,14 @@ const countType = async (request) => {
     query = "SELECT COUNT(*) AS jumlah FROM `konsumen` WHERE `tipe` = 'USAHA'";
     const [result2, field2] = await databaseQuery(query);
 
-    return{
-        rumahTangga: result.at(0).jumlah?result.at(0).jumlah:0,
-        usaha: result2.at(0).jumlah?result2.at(0).jumlah:0
+    return {
+        rumahTangga: !result.at(0) ? 0 : result.at(0).jumlah,
+        usaha: !result2.at(0) ?  0 : result2.at(0).jumlah 
     }
 }
 
 const register = async (request) => {
-    if(!request.files?.ktp){
+    if (!request.files?.ktp) {
         throw new ResponseError(400, "Membutuhkan File KTP")
     }
     const customerRequest = validate_object(addCustomerValidation, request.body)
@@ -111,7 +115,12 @@ const register = async (request) => {
     const [resultUser2, field2] = await databaseQuery(query, params);
 
     if (resultUser2.affectedRows < 1) throw new ResponseError(400, "Gagal Mendaftarkan pelanggan baru")
-    return "Berhasil Mendaftarkan Pelanggan"
+
+    query = "SELECT * FROM konsumen WHERE nik=?";
+    params = [customerRequest.nik];
+    const [resultUser3, field3] = await databaseQuery(query, params);
+
+    return resultUser3.at(0)
 }
 
 

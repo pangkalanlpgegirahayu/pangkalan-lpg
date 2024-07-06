@@ -17,8 +17,6 @@ const update = async (request) => {
         throw new ResponseError(400, "Gagal mengupdate harga");
     }
 
-    query = "UPDATE "
-
     return "Berhasil merubah harga"
 }
 
@@ -193,31 +191,26 @@ const stok = async (request) => {
     let params = [namaGas];
     const [resultData, field] = await databaseQuery(query, params)
 
-    if(resultData.length<1){
-        throw new ResponseError(400, "Tidak ada data")
-    }
-
     query = "SELECT harga_beli, harga_jual FROM `gas` WHERE nama=? ORDER BY id DESC LIMIT 1";
     params = [namaGas];
     const [resultData2, field2] = await databaseQuery(query, params)
 
     query = "SELECT SUM(jumlah) AS total_terjual FROM `detail_pembelian` WHERE id_detail_pengiriman=?";
-    params = [resultData.at(0).id];
+    params = [!resultData.at(0)?0:resultData.at(0).id];
     const [resultData3, field3] = await databaseQuery(query, params)
-
 
     query = "SELECT SUM(a.jumlah*b.harga_jual) AS totalKeuntungan FROM `detail_pembelian` AS a JOIN `gas` AS b ON a.id_gas = b.id WHERE b.nama = ?";
     params = [namaGas];
     const [resultData4, field4] = await databaseQuery(query, params)
 
     return {
-        totalStok: resultData.at(0).jumlah,
-        totalKeuntungan: resultData4.at(0).totalKeuntungan,
-        stok: resultData.at(0).sisa,
-        retur: resultData.at(0).retur,
-        sold: resultData3.at(0).total_terjual,
-        hargaBeli: resultData2.at(0).harga_beli,
-        hargaJual: resultData2.at(0).harga_jual,
+        totalStok: !resultData.at(0)?0:resultData.at(0).jumlah,
+        totalKeuntungan: !resultData4.at(0)?0:resultData4.at(0).totalKeuntungan,
+        stok: !resultData.at(0)?0:resultData.at(0).sisa,
+        retur: !resultData.at(0)?0:resultData.at(0).retur,
+        sold: !resultData3.at(0)?0:resultData3.at(0).total_terjual,
+        hargaBeli: !resultData2.at(0)?0:resultData2.at(0).harga_beli,
+        hargaJual: !resultData2.at(0)?0:resultData2.at(0).harga_jual,
     }
 }
 
@@ -234,7 +227,7 @@ const add = async (user, request) => {
 
     const [resultData4, field4] = await databaseQuery(query, params)
     
-    if (resultData4.at(0).sisa > 0) {
+    if ((!resultData4.at(0)? 0 : resultData4.at(0).sisa)>0) {
         throw new ResponseError(400, "Tidak bisa menambah stok sebelum habis")
     }
 

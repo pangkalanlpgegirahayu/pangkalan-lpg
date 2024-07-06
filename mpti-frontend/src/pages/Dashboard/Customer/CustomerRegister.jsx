@@ -67,6 +67,7 @@ function CustomerRegister() {
 
         dispatch(customerRegister(prepData)).then(result=>{
             document.getElementById('customer_register_modal').showModal()
+            console.log(result)
         })
     }
 

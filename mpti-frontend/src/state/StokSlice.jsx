@@ -216,7 +216,9 @@ const StokSlice = createSlice({
         success: null,
         successPriceChange: null,
         messagePriceChange: null, 
+        messageRetur: null, 
         successGetData: null,
+        successRetur: null,
         data: {
             inputDate: null,
             countStok: 100,
@@ -250,6 +252,9 @@ const StokSlice = createSlice({
     reducers: {
         updateNikRetur: (state, action) => {
             state.dataRetur.nik = action.payload;
+        },
+        updateSuccessRetur: (state, action) => {
+            state.successRetur = action.payload;
         },
         updateCountReturNew: (state, action) => {
             state.dataRetur.countReturNew = action.payload;
@@ -397,6 +402,7 @@ const StokSlice = createSlice({
             .addCase(gasRetur.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = false;
+                state.successRetur = true;
                 state.dataStok.countRetur = action.payload.data.countRetur;
                 state.dataStok.stok = action.payload.data.stok;
                 state.dataStok.countSell = action.payload.data.countSell;
@@ -404,10 +410,11 @@ const StokSlice = createSlice({
             .addCase(gasRetur.rejected, (state, action) => {
                 state.loading = false;
                 state.error = true;
-                state.message = action.payload;
+                state.successRetur = false;
+                state.messageRetur = action.payload;
             })
 
 })
 
-export const {updateSuccessPriceChangeStok, updateSuccessGetdataStok, updateNikRetur, updateCountReturMoney, updateCountReturNew, updatePriceBuyStok, updatePriceSellStok, updateSuccessStok, updateInputDateStok, updateCountStok, updateInformationStok, updateErrorStok, updateMessageStok, updateCurrentPageStok, updateStartDateStok, updateEndDateStok } = StokSlice.actions
+export const {updateSuccessRetur, updateSuccessPriceChangeStok, updateSuccessGetdataStok, updateNikRetur, updateCountReturMoney, updateCountReturNew, updatePriceBuyStok, updatePriceSellStok, updateSuccessStok, updateInputDateStok, updateCountStok, updateInformationStok, updateErrorStok, updateMessageStok, updateCurrentPageStok, updateStartDateStok, updateEndDateStok } = StokSlice.actions
 export default StokSlice.reducer

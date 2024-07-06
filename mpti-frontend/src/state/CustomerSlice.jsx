@@ -206,18 +206,19 @@ const CustomerSlice = createSlice({
             .addCase(customerRegister.fulfilled, (state, action) => {
                 state.loading = false
                 state.error = false
-                state.message = action.payload
+                state.message = "Berhasil mendaftarkan pelanggan"
                 state.successRegister = true
-                // state.data.nik = null
-                // state.data.name = null
-                // state.data.address = null
-                // state.data.type = 'Rumah Tangga'
+                state.success = true
+                state.data.nik = action.payload.data.nik
+                state.data.name = action.payload.data.nama
+                state.data.type = action.payload.data.tipe
             })
             .addCase(customerRegister.rejected, (state, action) => {
                 state.loading = false
                 state.error = true
                 state.message = action.payload
                 state.successRegister = false
+                state.success = false
             })
     }
 })

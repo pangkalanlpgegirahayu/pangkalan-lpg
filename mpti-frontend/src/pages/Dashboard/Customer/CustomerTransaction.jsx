@@ -15,13 +15,18 @@ function CustomerTransaction() {
 
     useEffect(() => {
         if (customerState.data.nik == null || !customerState.success) {
+            console.log("apaksad")
             return navigate("/pelanggan")
         }
 
         const prepData = {
             token: userState.data.token
         }
-        dispatch(gasStok(prepData))
+        dispatch(gasStok(prepData)).then(result=>{
+            if(!result.error){
+                console.log(result)
+            }
+        })
 
         fetch('https://worldtimeapi.org/api/timezone/Asia/Jakarta')
             .then(response => response.json())

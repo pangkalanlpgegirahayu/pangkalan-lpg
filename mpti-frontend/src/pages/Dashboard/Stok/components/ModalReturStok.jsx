@@ -32,19 +32,19 @@ function ModalReturStok() {
             countReturMoney: stokState.dataRetur.countReturMoney,
         }
 
-        if(prepData.countReturMoney==0 && prepData.countReturNew==0){
-            dispatch(updateMessageStok("Data Retur Tidak Boleh Kosong Seluruhnya"))
-            dispatch(updateErrorStok(true))
-            document.getElementById('stok_retur_modal').close()
-            return
-        }
+        // if(prepData.countReturMoney==0 && prepData.countReturNew==0){
+        //     dispatch(updateMessageStok("Data Retur Tidak Boleh Kosong Seluruhnya"))
+        //     dispatch(updateErrorStok(true))
+        //     document.getElementById('stok_retur_modal').close()
+        //     return
+        // }
 
-        if(prepData.nik.length == 0){
-            dispatch(updateMessageStok("NIK Tidak Boleh Kosong"))
-            dispatch(updateErrorStok(true))
-            document.getElementById('stok_retur_modal').close()
-            return
-        }
+        // if(prepData.nik.length == 0){
+        //     dispatch(updateMessageStok("NIK Tidak Boleh Kosong"))
+        //     dispatch(updateErrorStok(true))
+        //     document.getElementById('stok_retur_modal').close()
+        //     return
+        // }
 
         dispatch(gasRetur(prepData)).then(result => {
             if (!result.error) {
@@ -65,7 +65,7 @@ function ModalReturStok() {
             } else {
                 
                 dispatch(updateSuccessStok(false));
-                document.getElementById('stok_retur_modal').close()
+                // document.getElementById('stok_retur_modal').close()
                 
             }
         })
@@ -73,7 +73,7 @@ function ModalReturStok() {
     return (
         <dialog id="stok_retur_modal" className="modal">
             <div className="modal-box">
-                {stokState.success ? (
+                {stokState.successRetur===true ? (
                     <div className="grid justify-items-center py-14">
                         <span className="material-symbols-outlined w-48 h-48 bg-[#4AAE64] text-9xl rounded-full flex justify-center items-center text-white">
                             check
@@ -83,6 +83,25 @@ function ModalReturStok() {
                 ) : (
                     <>
                         <h3 className="font-bold text-lg">Retur</h3>
+                        {stokState.successRetur=== false ? (
+                            <div role="alert" className="alert alert-warning mb-3">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6 shrink-0 stroke-current"
+                                    fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+
+                                <span>{stokState.messageRetur.split(". ")[0]}</span>
+
+
+                            </div>
+                        ) : ""}
                         <Form className="grid gap-5" onSubmit={handleSubmitRetur}>
                             <div className="grid items-center md:grid-cols-2">
                                 <h2 className="font-medium">NIK</h2>

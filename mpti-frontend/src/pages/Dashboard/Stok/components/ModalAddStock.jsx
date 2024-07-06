@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { Form, useNavigate } from "react-router-dom"
-import { addStok, gasStok, updateErrorStok, updateInformationStok, updateInputDateStok, updateMessageStok, updateSuccessStok } from "../../../../state/StokSlice";
+import { addStok, gasStok, historyStok, updateErrorStok, updateInformationStok, updateInputDateStok, updateMessageStok, updateSuccessStok } from "../../../../state/StokSlice";
 import { useEffect } from "react";
 
 function ModalAddStock() {
@@ -51,7 +51,9 @@ function ModalAddStock() {
                     startDate: stokState.historyData?.startDate,
                     endDate: stokState.historyData?.endDate
                 }
-                dispatch(historyStok(prepData))
+                dispatch(historyStok(prepData)).then(result=>{
+                    console.log("this execute or nah")
+                })
                 
             } else {
                 

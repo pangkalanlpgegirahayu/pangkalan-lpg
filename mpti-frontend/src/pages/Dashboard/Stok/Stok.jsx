@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Form, Link, useLocation, useNavigate } from "react-router-dom"
-import { gasStok, updateInputDateStok, updateSuccessGetdataStok, updateSuccessPriceChangeStok, updateSuccessStok } from "../../../state/StokSlice";
+import { gasStok, updateInputDateStok, updateSuccessGetdataStok, updateSuccessPriceChangeStok, updateSuccessRetur, updateSuccessStok } from "../../../state/StokSlice";
 import ModalAddStock from "./components/ModalAddStock";
 import TableStokHistory from "./components/TableHistoryStok";
 import ModalPriceStok from "./components/ModalPriceStok";
@@ -68,6 +68,17 @@ function Stok() {
         }, 3000)
         return () => clearTimeout(timer)
     }, [stokState.successPriceChange])
+
+    useEffect(() => {
+        console.log("ini berubah pas modal")
+        const timer = setTimeout(() => {
+            if (stokState.successRetur) {
+                document.getElementById('stok_retur_modal').close()
+            }
+            dispatch(updateSuccessRetur(null))
+        }, 3000)
+        return () => clearTimeout(timer)
+    }, [stokState.successRetur])
 
     useEffect(() => {
         const timer = setTimeout(() => {

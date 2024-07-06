@@ -21,6 +21,7 @@ export async function actionForgetPassword() {
         const result = await response.data;
         return redirect("/");
     } catch (error) {
+        localStorage.removeItem("user")||sessionStorage.removeItem("user")
         return null;
     }
 }
