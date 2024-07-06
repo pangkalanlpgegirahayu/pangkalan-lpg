@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Link, useNavigate } from "react-router-dom"
-import { transactionCustomer, updateCountBuyCustomer, updateInputDateCustomer, updateSuccessCustomer } from "../../../state/CustomerSlice";
+import { customerCheckNik, transactionCustomer, updateCountBuyCustomer, updateInputDateCustomer, updateSuccessCustomer } from "../../../state/CustomerSlice";
 import { gasStok } from "../../../state/StokSlice";
 import ModalTransactionCustomer from "./Components/ModalTransactionCustomer";
 import axios from "axios";
@@ -19,10 +19,20 @@ function CustomerTransaction() {
             return navigate("/pelanggan")
         }
 
-        const prepData = {
+        let prepData = {
             token: userState.data.token
         }
         dispatch(gasStok(prepData))
+
+        prepData = {
+            nik: customerState.data.nik,
+            token: userState.data.token,
+        }
+        dispatch(customerCheckNik(prepData)).then(result=>{
+            if(result.error){
+                return navigate("/pelanggan")
+            }
+        })
 
         fetch('https://worldtimeapi.org/api/timezone/Asia/Jakarta')
             .then(response => response.json())
