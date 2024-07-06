@@ -27,7 +27,7 @@ export async function actionForgetPassword() {
 }
 
 function ForgetPassword() {
-    const forgetPasswordState = useSelector(state => state.forgetPassword.progress);
+    const forgetPasswordState = useSelector(state => state.forgetPassword);
     useEffect(() => {
         const timer = setTimeout(() => {
             if (forgetPasswordState.error) {
