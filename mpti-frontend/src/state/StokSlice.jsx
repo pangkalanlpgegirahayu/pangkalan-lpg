@@ -214,22 +214,24 @@ const StokSlice = createSlice({
         error: null,
         message: null,
         success: null,
+        successPriceChange: null,
+        messagePriceChange: null, 
         successGetData: null,
         data: {
             inputDate: null,
             countStok: 100,
             information: null,
-            priceBuy: null,
-            priceSell: null
+            priceBuy: 0,
+            priceSell: 0
         },
         dataStok: {
             countTotalStok: 0,
             stok: 0,
             countSold: 0,
             countRetur: 0,
-            dirtyRevenue: null,
-            priceBuy: null,
-            priceSell: null,
+            dirtyRevenue: 0,
+            priceBuy: 0,
+            priceSell: 0,
         },
         historyData: {
             startDate: '',
@@ -292,6 +294,9 @@ const StokSlice = createSlice({
         },
         updateSuccessGetdataStok: (state, action) => {
             state.successGetData = action.payload;
+        },
+        updateSuccessPriceChangeStok: (state, action) => {
+            state.successPriceChange = action.payload;
         }
     },
     extraReducers: builder =>
@@ -359,13 +364,13 @@ const StokSlice = createSlice({
             }).addCase(updatePriceStok.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = false;
-                state.success = true;
-                state.message = action.payload.data;
+                state.successPriceChange = true;
+                state.messagePriceChange = action.payload.data;
             }).addCase(updatePriceStok.rejected, (state, action) => {
                 state.loading = false;
                 state.error = true;
-                // state.success = false;
-                state.message = action.payload
+                state.successPriceChange = false;
+                state.messagePriceChange = action.payload
             })
             .addCase(gasDelete.pending, (state, action) => {
                 state.loading = true;
@@ -404,5 +409,5 @@ const StokSlice = createSlice({
 
 })
 
-export const { updateSuccessGetdataStok, updateNikRetur, updateCountReturMoney, updateCountReturNew, updatePriceBuyStok, updatePriceSellStok, updateSuccessStok, updateInputDateStok, updateCountStok, updateInformationStok, updateErrorStok, updateMessageStok, updateCurrentPageStok, updateStartDateStok, updateEndDateStok } = StokSlice.actions
+export const {updateSuccessPriceChangeStok, updateSuccessGetdataStok, updateNikRetur, updateCountReturMoney, updateCountReturNew, updatePriceBuyStok, updatePriceSellStok, updateSuccessStok, updateInputDateStok, updateCountStok, updateInformationStok, updateErrorStok, updateMessageStok, updateCurrentPageStok, updateStartDateStok, updateEndDateStok } = StokSlice.actions
 export default StokSlice.reducer

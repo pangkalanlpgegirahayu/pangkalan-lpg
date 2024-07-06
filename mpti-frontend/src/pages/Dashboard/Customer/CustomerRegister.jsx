@@ -19,11 +19,15 @@ function CustomerRegister() {
     }
 
     const handleNameInputChange = (event) => {
-        event.target.value = event.target.value.replace(/[^a-zA-Z]/g, '');
+        event.target.value = event.target.value.replace(/[^a-zA-Z\s]/g, '');
+        event.target.value = event.target.value.replace(/^\s/g, '');
+        event.target.value = event.target.value.replace(/(\s)\s/g, '');
         dispatch(updateNameCustomer(event.target.value));
     }
 
     const handleAddressInputChange = (event) => {
+        event.target.value = event.target.value.replace(/^\s/g, '');
+        event.target.value = event.target.value.replace(/(\s)\s/g, '');
         dispatch(updateAddressCustomer(event.target.value));
     }
 
