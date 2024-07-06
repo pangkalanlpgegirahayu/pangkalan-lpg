@@ -1,17 +1,17 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, Outlet, redirect, useLocation, useNavigate } from 'react-router-dom'
-import { updateErrorStok, updateSuccessStok } from '../../state/StokSlice';
+import { updateErrorStok} from '../../state/StokSlice';
 import axios from 'axios';
-import Pertamina from "../../assets/Pertamina.svg"
+
 import PertaminaPNG from "../../assets/PertaminaPNG.png"
-import DashboardContent from './content';
+
 import { logoutUser, updateSuccessLoginUser, updateSuccessLogoutUser } from '../../state/UserSlice';
-import { split } from 'postcss/lib/list';
+
 
 
 export async function actionDashboard() {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user")||sessionStorage.getItem("user"));
 
     try {
         const response = await axios.get(import.meta.env.VITE_APP_API_URI, {

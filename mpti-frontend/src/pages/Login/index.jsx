@@ -3,13 +3,13 @@ import PertaminaPNG from "../../assets/PertaminaPNG.png"
 import { useDispatch, useSelector } from "react-redux"
 import { Form, Link, redirect, useNavigate } from "react-router-dom"
 import { loginUser, updateErrorUser, updateMessageUser, updatePasswordUser, updateSuccessLogoutUser, updateUsernameUser } from "../../state/UserSlice";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import axios from "axios";
 
 
 
 export async function actionLogin() {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user")||sessionStorage.getItem("user"));
     try {
         const response = await axios.get(import.meta.env.VITE_APP_API_URI, {
             headers: {
@@ -28,6 +28,7 @@ function Login() {
     const userState = useSelector(state => state.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const rememberMe = useRef(false);
 
     const handleUsernameInputChange = (event) => {
         event.target.value = event.target.value.replace(/[^a-z0-9]/g, '');
@@ -50,7 +51,8 @@ function Login() {
 
         const prepData = {
             username: userState.login.username,
-            password: userState.login.password
+            password: userState.login.password,
+            rememberMe: rememberMe.current
         }
 
         dispatch(loginUser(prepData)).then(result => {
@@ -81,6 +83,10 @@ function Login() {
     useEffect(() => {
         document.title = "Pangkalan LPG Egi Rahayu - Login"
     }, [])
+
+    const handleRememberMeChange = (event) => {
+        rememberMe.current = event.target.checked 
+    }
 
     return (
         <>
@@ -120,8 +126,16 @@ function Login() {
                                 </span>
                                 <input onChange={handlePasswordInputChange} type="password" className="grow" placeholder="●●●●●●" />
                             </label>
+                            <div className="flex justify-between w-full max-w-96">
+                                <div className="form-control">
+                                    <label className="label gap-2 cursor-pointer">
+                                        <input type="checkbox" onChange={handleRememberMeChange} name="remember-me" className="checkbox checkbox-sm" />
+                                        <span className="label-text">Ingat saya?</span>
+                                    </label>
+                                </div>
 
-                            <Link to="/lupa-sandi" className="max-w-96 text-end text-sm place-self-end mr-5">Lupa Kata Sandi?</Link>
+                                <Link to="/lupa-sandi" className="max-w-96 my-auto text-end text-sm place-self-end mr-5">Lupa Kata Sandi?</Link>
+                            </div>
                             <div className="card-actions justify-center w-full p-4">
                                 <button type="submit" className="btn rounded-full w-full max-w-80 bg-[#4AAE64] text-white hover:text-black" disabled={userState.loading}>
                                     <span className={userState.loading ? "loading loading-spinner" : ""}></span>

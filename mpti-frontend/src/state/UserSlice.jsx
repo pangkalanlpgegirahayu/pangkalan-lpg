@@ -21,8 +21,11 @@ export const loginUser = createAsyncThunk(
             })
 
             const result = await response.data
-            if()
-            localStorage.setItem("user", JSON.stringify(result.data))
+            if(data.rememberMe){
+                localStorage.setItem("user", JSON.stringify(result.data))
+            }else{
+                sessionStorage.setItem("user", JSON.stringify(result.data))
+            }
             return result;
         } catch (error) {
             if (error.response) {
@@ -49,7 +52,7 @@ export const logoutUser = createAsyncThunk(
 
             const result = await response.data
 
-            localStorage.removeItem("user")
+            localStorage.removeItem("user")||sessionStorage.removeItem("user");
             return result;
         } catch (error) {
             if (error.response) {
@@ -76,7 +79,7 @@ const UserSlice = createSlice({
             password: ""
         },
 
-        data: JSON.parse(localStorage.getItem("user")) || null
+        data: JSON.parse(localStorage.getItem("user")) || JSON.parse(sessionStorage.getItem("user")) || null
     },
     reducers: {
         updateUsernameUser: (state, action) => {

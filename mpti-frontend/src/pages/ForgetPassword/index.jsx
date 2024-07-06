@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import ModalForgetPasswordChange from "./components/ModalForgetPasswordChange";
 
 export async function actionForgetPassword() {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user")||sessionStorage.getItem("user"));
 
     try {
         const response = await axios.get(import.meta.env.VITE_APP_API_URI, {
