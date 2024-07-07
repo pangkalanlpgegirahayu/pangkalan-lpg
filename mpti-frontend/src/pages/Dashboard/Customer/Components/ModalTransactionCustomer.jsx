@@ -7,7 +7,7 @@ function ModalTransactionCustomer() {
 
     return (
         <dialog id="customer_transaction_modal" className="modal">
-            <div className="modal-box">
+            <div className="modal-box rounded-md">
                 {customerState.successTransaction ? (
                     <>
                         <div className="grid justify-items-center py-14">

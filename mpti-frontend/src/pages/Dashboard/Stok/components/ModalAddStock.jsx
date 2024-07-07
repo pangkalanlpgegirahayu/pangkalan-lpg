@@ -59,7 +59,7 @@ function ModalAddStock() {
         <>
             {/* You can open the modal using document.getElementById('ID').showModal() method */}
             <dialog id="stok_add_modal" className="modal">
-                <div className="modal-box">
+                <div className="modal-box rounded-md">
                     {stokState.successAdd ? (
                         <div className="grid justify-items-center py-14">
                             <span className="material-symbols-outlined w-48 h-48 bg-[#4AAE64] text-9xl rounded-full flex justify-center items-center text-white">
