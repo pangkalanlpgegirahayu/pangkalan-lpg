@@ -38,6 +38,11 @@ function Customer() {
             if (!result.error) {
                 navigate("/pelanggan/transaksi")
             }
+
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
         })
     }
 

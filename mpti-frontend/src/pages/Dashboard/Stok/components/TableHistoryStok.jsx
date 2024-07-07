@@ -4,6 +4,7 @@ import { Form, Link, useNavigate } from "react-router-dom"
 import { downloadHistoryStok, historyStok, updateCurrentPageStok, updateEndDateStok, updateErrorStok, updateStartDateStok, updateSuccessStok } from "../../../../state/StokSlice";
 import FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { updateSuccessLogoutUser } from "../../../../state/UserSlice";
 
 
 function TableHistoryStok() {
@@ -19,7 +20,6 @@ function TableHistoryStok() {
 
     const handleEndDateInputChange = (event) => {
         dispatch(updateEndDateStok(event.target.value))
-
     }
 
     const handleSubmitSearchHistory = (event) => {
@@ -31,7 +31,12 @@ function TableHistoryStok() {
             endDate: stokState.historyData?.endDate
         }
 
-        dispatch(historyStok(dataPrep))
+        dispatch(historyStok(dataPrep)).then(result=>{
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
+        })
     }
 
     const handleHistoryNextPage = (event) => {
@@ -42,7 +47,12 @@ function TableHistoryStok() {
             startDate: stokState.historyData?.startDate,
             endDate: stokState.historyData?.endDate
         }
-        dispatch(historyStok(dataPrep))
+        dispatch(historyStok(dataPrep)).then(result=>{
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
+        })
     }
 
     const handleHistoryPrevPage = (event) => {
@@ -53,7 +63,12 @@ function TableHistoryStok() {
             startDate: stokState.historyData?.startDate,
             endDate: stokState.historyData?.endDate
         }
-        dispatch(historyStok(dataPrep))
+        dispatch(historyStok(dataPrep)).then(result=>{
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
+        })
     }
 
 
@@ -70,7 +85,12 @@ function TableHistoryStok() {
                     startDate: data.datetime.slice(0, 11) + "00:00",
                     endDate: data.datetime.slice(0, 11) + "23:59"
                 }
-                dispatch(historyStok(dataPrep))
+                dispatch(historyStok(dataPrep)).then(result=>{
+                    if(result.payload === "Unauthorized"){
+                        dispatch(updateSuccessLogoutUser(true))
+                        navigate("/login")
+                    }
+                })
             })
             .catch(error => {
 
@@ -90,7 +110,12 @@ function TableHistoryStok() {
                 excelExport(result.payload)
             }
         })
-        dispatch(historyStok(dataPrep))
+        dispatch(historyStok(dataPrep)).then(result=>{
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
+        })
     }
 
     const handleDeleteStok = (id) => {
@@ -101,7 +126,7 @@ function TableHistoryStok() {
     }
 
     const excelExport = (result) => {
-        const fileName = 'apidata';
+        const fileName = `riwayat_stok${stokState.historyData.startDate}-${stokState.historyData.endDate}`;
         const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
         const fileExtension = ".xlsx";
         const Heading = [

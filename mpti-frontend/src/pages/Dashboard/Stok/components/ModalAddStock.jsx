@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Form, useNavigate } from "react-router-dom"
 import { addStok, gasStok, historyStok, updateErrorStok, updateInformationStok, updateInputDateStok, updateMessageStok, updateSuccessAddStok, updateSuccessStok } from "../../../../state/StokSlice";
 import { useEffect } from "react";
+import { updateSuccessLogoutUser } from "../../../../state/UserSlice";
 
 function ModalAddStock() {
     const stokState = useSelector(state => state.stok);
@@ -51,6 +52,10 @@ function ModalAddStock() {
                 }
                 dispatch(historyStok(prepData))
             } 
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
         })
 
     }

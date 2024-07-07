@@ -4,9 +4,10 @@ import JoiDate from '@joi/date';
 const joi_format = Joi.extend(JoiDate)
 
 const addGasValidation = Joi.object({
-    inputDate: joi_format.date().format('YYYY-MM-DDTHH:mm').required().messages({
+    inputDate: joi_format.date().format('YYYY-MM-DDTHH:mm').raw().required().messages({
         "any.required":"Tanggal input tidak boleh kosong",
-        "any.format": "Format input tanggal tidak sesuai"
+        "date.base":"Tanggal input tidak boleh kosong",
+        "date.format": "Format input tanggal tidak sesuai"
     }),
     countStok: Joi.number().positive().required().messages({
         "number.positive": "Format stok tidak menerima nilai negative atau kosong",
@@ -18,9 +19,10 @@ const addGasValidation = Joi.object({
 })
 
 const updatePriceGasValidation = Joi.object({
-    inputDate: joi_format.date().format('YYYY-MM-DDTHH:mm').required().messages({
+    inputDate: joi_format.date().format('YYYY-MM-DDTHH:mm').raw().required().messages({
         "any.required":"Tanggal input tidak boleh kosong",
-        "any.format": "Format input tanggal tidak sesuai"
+        "date.format": "Format input tanggal tidak sesuai",
+        "date.base": "Format input tanggal tidak sesuai"
     }),
     priceBuy: Joi.number().positive().required().messages({
         "number.positive": "Format harga beli tidak menerima nilai negative atau kosong",
@@ -43,11 +45,11 @@ const searchGasStokHistoryValidation = Joi.object({
     size: Joi.number().min(1).positive().max(100).default(10).messages({
         "number.positive": "Format size tidak menerima nilai negative atau kosong",
     }),
-    startDate: joi_format.date().format('YYYY-MM-DDTHH:mm').optional().messages({
-        "date.base": "Format startDate tidak sesuai",
+    startDate: joi_format.date().format('YYYY-MM-DDTHH:mm').raw().optional().messages({
+        "date.format": "Format startDate tidak sesuai",
     }),
-    endDate: joi_format.date().format('YYYY-MM-DDTHH:mm').optional().messages({
-        "date.base": "Format endDate tidak sesuai"
+    endDate: joi_format.date().format('YYYY-MM-DDTHH:mm').raw().optional().messages({
+        "date.format": "Format endDate tidak sesuai"
     }),
 })
 
@@ -58,29 +60,29 @@ const searchGasSalesHistoryValidation = Joi.object({
     size: Joi.number().min(1).positive().max(100).default(10).messages({
         "number.positive": "Format size tidak menerima nilai negative atau kosong",
     }),
-    startDate: joi_format.date().format('YYYY-MM-DDTHH:mm').optional().messages({
-        "date.base": "Format startDate tidak sesuai",
+    startDate: joi_format.date().format('YYYY-MM-DDTHH:mm').raw().optional().messages({
+        "date.format": "Format startDate tidak sesuai",
     }),
-    endDate: joi_format.date().format('YYYY-MM-DDTHH:mm').optional().messages({
-        "date.base": "Format endDate tidak sesuai",
+    endDate: joi_format.date().format('YYYY-MM-DDTHH:mm').raw().optional().messages({
+        "date.format": "Format endDate tidak sesuai",
     }),
 })
 
 const downloadGasStokHistoryValidation = Joi.object({
-    startDate: joi_format.date().format('YYYY-MM-DDTHH:mm').optional().messages({
-        "date.base": "Format endDate tidak sesuai",
+    startDate: joi_format.date().format('YYYY-MM-DDTHH:mm').raw().optional().messages({
+        "date.format": "Format startDate tidak sesuai",
     }),
-    endDate: joi_format.date().format('YYYY-MM-DDTHH:mm').optional().messages({
-        "date.base": "Format endDate tidak sesuai",
+    endDate: joi_format.date().format('YYYY-MM-DDTHH:mm').raw().optional().messages({
+        "date.format": "Format endDate tidak sesuai",
     }),
 })
 
 const downloadGasSalesHistoryValidation = Joi.object({
-    startDate: joi_format.date().format('YYYY-MM-DDTHH:mm').optional().messages({
-        "date.base": "Format endDate tidak sesuai",
+    startDate: joi_format.date().format('YYYY-MM-DDTHH:mm').raw().optional().messages({
+        "date.format": "Format startDate tidak sesuai",
     }),
-    endDate: joi_format.date().format('YYYY-MM-DDTHH:mm').optional().messages({
-        "date.base": "Format endDate tidak sesuai",
+    endDate: joi_format.date().format('YYYY-MM-DDTHH:mm').raw().optional().messages({
+        "date.format": "Format endDate tidak sesuai",
     }),
 })
 
@@ -112,8 +114,9 @@ const newTransactionGasValidation = Joi.object({
         "string.pattern.base": "Format NIK wajib berisi angka",
         "any.required": "NIK wajib diisi"
     }),
-    inputDate: joi_format.date().format('YYYY-MM-DDTHH:mm').required().messages({
+    inputDate: joi_format.date().format('YYYY-MM-DDTHH:mm').raw().required().messages({
         "date.base": "Tanggal transaksi tidak boleh kosong",
+        "date.format": "Tanggal transaksi tidak sesuai format",
         "date.empty": "Tanggal transaksi tidak boleh kosong",
         "date.required": "Tanggal transaksi tidak boleh kosong",
     }),

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { downloadHistoryStok, gasStok } from "../../state/StokSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { updateSuccessLogoutUser } from "../../state/UserSlice";
 
 function DashboardContent() {
     const stokState = useSelector(state => state.stok)
@@ -31,7 +32,12 @@ function DashboardContent() {
                     startDate: startDate.toISOString().slice(0,11) + "00:00",
                     endDate: data.datetime.slice(0, 11) + "23:59"
                 }
-                dispatch(downloadHistoryStok(prepData))
+                dispatch(downloadHistoryStok(prepData)).then(result=>{
+                    if(result.payload === "Unauthorized"){
+                        dispatch(updateSuccessLogoutUser(true))
+                        navigate("/login")
+                    }
+                })
             })
         axios.get(import.meta.env.VITE_APP_API_URI + "customer", {
             headers: {
@@ -58,7 +64,12 @@ function DashboardContent() {
             startDate: startDate.toISOString().slice(0,11) + "00:00",
             endDate: dateEnd.current.slice(0,11) + "23:59"
         }
-        dispatch(downloadHistoryStok(prepData))
+        dispatch(downloadHistoryStok(prepData)).then(result=>{
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
+        })
     }
     return (
         <>

@@ -360,8 +360,6 @@ const salesHistory = async (user, request) => {
         params = [namaGas]
     }
 
-
-
     const [resultData, field] = await databaseQuery(query, params)
 
     const paging = {}
@@ -469,19 +467,17 @@ const printSalesHistory = async (user, request) => {
 
     if (requestHistory.startDate && requestHistory.endDate) {
 
-        query = "SELECT a.id, f.id_pengiriman, DATE_FORMAT(a.tanggal, '%d/%m/%Y %H:%i') AS tanggal, e.nama AS nama_pembeli, d.nama AS nama_penginput, b.jumlah, (b.jumlah*c.harga_jual) AS totalBayar, c.harga_jual AS hargaSatuan, c.nama AS nama_gas FROM `pembelian_gas` AS a JOIN `detail_pembelian` AS b JOIN `gas` AS c JOIN `users` AS d JOIN `konsumen` AS e JOIN `detail_pengiriman` AS f ON a.id_user = d.id AND a.id=b.id_pembelian AND b.id_gas=c.id AND a.id_user = e.id AND b.id_detail_pengiriman = f.id WHERE c.nama = ? AND b.jumlah != 0 AND a.tanggal BETWEEN ? AND ? ORDER BY a.id DESC";
+        query = "SELECT a.id, f.id_pengiriman, DATE_FORMAT(a.tanggal, '%d/%m/%Y %H:%i') AS tanggal, e.nama AS nama_pembeli, d.nama AS nama_penginput, b.jumlah, (b.jumlah*c.harga_jual) AS totalBayar, c.harga_jual AS hargaSatuan, c.nama AS nama_gas FROM `pembelian_gas` AS a JOIN `detail_pembelian` AS b JOIN `gas` AS c JOIN `users` AS d JOIN `konsumen` AS e JOIN `detail_pengiriman` AS f ON a.id_user = d.id AND a.id=b.id_pembelian AND b.id_gas=c.id AND a.id_konsumen = e.id AND b.id_detail_pengiriman = f.id WHERE c.nama = ? AND b.jumlah != 0 AND a.tanggal BETWEEN ? AND ? ORDER BY a.id DESC";
 
         params = [namaGas, requestHistory.startDate, requestHistory.endDate]
 
 
     }
     if (!requestHistory.startDate && !requestHistory.endDate) {
-        query = "SELECT a.id, f.id_pengiriman, DATE_FORMAT(a.tanggal, '%d/%m/%Y %H:%i') AS tanggal, e.nama AS nama_pembeli, d.nama AS nama_penginput, b.jumlah, (b.jumlah*c.harga_jual) AS totalBayar, c.harga_jual AS hargaSatuan, c.nama AS nama_gas FROM `pembelian_gas` AS a JOIN `detail_pembelian` AS b JOIN `gas` AS c JOIN `users` AS d JOIN `konsumen` AS e JOIN `detail_pengiriman` AS f ON a.id_user = d.id AND a.id=b.id_pembelian AND b.id_gas=c.id AND a.id_user = e.id AND b.id_detail_pengiriman = f.id WHERE c.nama = ? AND b.jumlah != 0 ORDER BY a.id DESC";
+        query = "SELECT a.id, f.id_pengiriman, DATE_FORMAT(a.tanggal, '%d/%m/%Y %H:%i') AS tanggal, e.nama AS nama_pembeli, d.nama AS nama_penginput, b.jumlah, (b.jumlah*c.harga_jual) AS totalBayar, c.harga_jual AS hargaSatuan, c.nama AS nama_gas FROM `pembelian_gas` AS a JOIN `detail_pembelian` AS b JOIN `gas` AS c JOIN `users` AS d JOIN `konsumen` AS e JOIN `detail_pengiriman` AS f ON a.id_user = d.id AND a.id=b.id_pembelian AND b.id_gas=c.id AND a.id_konsumen = e.id AND b.id_detail_pengiriman = f.id WHERE c.nama = ? AND b.jumlah != 0 ORDER BY a.id DESC";
         params = [namaGas]
     }
-
     const [resultData, field] = await databaseQuery(query, params)
-
     return {
         data: resultData,
         dataSold: {

@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Form } from "react-router-dom"
 import { gasRetur, gasStok, historyStok, updateCountReturMoney, updateCountReturNew, updateNikRetur, updateSuccessRetur } from "../../../../state/StokSlice";
 import { useState } from "react";
+import { updateSuccessLogoutUser } from "../../../../state/UserSlice";
 
 function ModalReturStok() {
     const stokState = useSelector(state => state.stok)
@@ -40,14 +41,24 @@ function ModalReturStok() {
                 let prepData = {
                     token: userState.data.token
                 }
-                dispatch(gasStok(prepData))
+                dispatch(gasStok(prepData)).then(result=>{
+                    if(result.payload === "Unauthorized"){
+                        dispatch(updateSuccessLogoutUser(true))
+                        navigate("/login")
+                    }
+                })
                 prepData = {
                     token: userState.data.token,
                     currentPage: stokState.historyData?.currentPage,
                     startDate: stokState.historyData?.startDate,
                     endDate: stokState.historyData?.endDate
                 }
-                dispatch(historyStok(prepData))
+                dispatch(historyStok(prepData)).then(result=>{
+                    if(result.payload === "Unauthorized"){
+                        dispatch(updateSuccessLogoutUser(true))
+                        navigate("/login")
+                    }
+                })
 
             }
         })

@@ -6,6 +6,7 @@ import * as XLSX from 'xlsx';
 
 import { getAllHistorySales, getSales, updateCurrentPageSales, updateEndDateSales, updateStartDateSales, updatesuccessGetDataSales } from "../../../state/SalesSlice";
 import axios from "axios";
+import { updateSuccessLogoutUser } from "../../../state/UserSlice";
 
 function Sales() {
     const salesState = useSelector(state => state.sales);
@@ -32,7 +33,12 @@ function Sales() {
             endDate: salesState.historyData?.endDate
         }
 
-        dispatch(getSales(dataPrep))
+        dispatch(getSales(dataPrep)).then(result=>{
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
+        })
     }
 
     const handleHistoryNextPage = (event) => {
@@ -43,7 +49,12 @@ function Sales() {
             startDate: salesState.historyData?.startDate,
             endDate: salesState.historyData?.endDate
         }
-        dispatch(getSales(dataPrep))
+        dispatch(getSales(dataPrep)).then(result=>{
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
+        })
     }
 
     const handleHistoryPrevPage = (event) => {
@@ -54,7 +65,12 @@ function Sales() {
             startDate: salesState.historyData?.startDate,
             endDate: salesState.historyData?.endDate
         }
-        dispatch(getSales(dataPrep))
+        dispatch(getSales(dataPrep)).then(result=>{
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
+        })
     }
 
     useEffect(() => {
@@ -78,6 +94,11 @@ function Sales() {
                     } else {
                         dispatch(updatesuccessGetDataSales(false))
                     }
+
+                    if(result.payload === "Unauthorized"){
+                        dispatch(updateSuccessLogoutUser(true))
+                        navigate("/login")
+                    }
                 })
             })
             .catch(error => {
@@ -100,12 +121,22 @@ function Sales() {
             if (!result.error) {
                 excelExport(result.payload)
             }
+
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
         })
-        dispatch(getSales(dataPrep))
+        dispatch(getSales(dataPrep)).then(result=>{
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
+        })
     }
 
     const excelExport = (result) => {
-        const fileName = 'penjualan';
+        const fileName = `penjualan${salesState.historyData.startDate}-${salesState.historyData.endDate}`;
         const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
         const fileExtension = ".xlsx";
 

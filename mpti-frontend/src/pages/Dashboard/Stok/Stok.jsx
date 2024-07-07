@@ -7,6 +7,7 @@ import TableStokHistory from "./components/TableHistoryStok";
 import ModalPriceStok from "./components/ModalPriceStok";
 import ModalReturStok from "./components/ModalReturStok";
 import axios from "axios";
+import { updateSuccessLogoutUser } from "../../../state/UserSlice";
 
 function Stok() {
     const stokState = useSelector(state => state.stok)
@@ -18,7 +19,12 @@ function Stok() {
         const prepData = {
             token: userState.data.token
         }
-        dispatch(gasStok(prepData))
+        dispatch(gasStok(prepData)).then(result=>{
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
+        })
     }, [])
 
     useEffect(() => {

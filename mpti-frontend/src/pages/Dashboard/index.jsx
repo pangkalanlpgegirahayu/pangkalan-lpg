@@ -23,7 +23,7 @@ export async function actionDashboard() {
         const result = await response.data;
         return null
     } catch (error) {
-        localStorage.removeItem("user")||sessionStorage.removeItem("user")
+        localStorage.removeItem("user") || sessionStorage.removeItem("user")
         return redirect("/login");
     }
 }
@@ -76,6 +76,12 @@ function Dashboard() {
             if (!result.error) {
                 navigate("/login")
             }
+
+            if (result.payload === "Unauthorized") {
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
+
         })
     }
 
@@ -98,7 +104,7 @@ function Dashboard() {
                                 <Link className="btn btn-ghost text-xl lg:hidden truncate"><img src={EgiRahayu} className="w-28" alt="" /></Link>
                             </div>
                             <div className="flex-none hidden md:block">
-                                <button className="btn btn-ghost" onClick={()=> document.getElementById('logout_modal').showModal()}>
+                                <button className="btn btn-ghost" onClick={() => document.getElementById('logout_modal').showModal()}>
                                     <span className="material-symbols-outlined">
                                         logout
                                     </span>
@@ -199,9 +205,9 @@ function Dashboard() {
                                 </NavLink>
 
                             </li>
-                            
+
                             <li className="md:hidden mt-4">
-                                <button className="btn btn-ghost" onClick={()=> document.getElementById('logout_modal').showModal()}>
+                                <button className="btn btn-ghost" onClick={() => document.getElementById('logout_modal').showModal()}>
                                     <span className="material-symbols-outlined">
                                         logout
                                     </span>
@@ -253,8 +259,8 @@ function Dashboard() {
                     </div>
                 </div>
             }
-            
-            <ModalLogout logoutFunction={logout}/>
+
+            <ModalLogout logoutFunction={logout} />
         </>
     )
 }
