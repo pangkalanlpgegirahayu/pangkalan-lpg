@@ -2,7 +2,7 @@
 function ModalLogout({logoutFunction}) {
     return (
         < dialog id="logout_modal" className="modal" >
-            <div className="modal-box">
+            <div className="modal-box rounded-md">
                 <div className="flex gap-2">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

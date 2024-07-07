@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { Form } from "react-router-dom"
-import { gasRetur, gasStok, historyStok, updateCountReturMoney, updateCountReturNew, updateErrorStok, updateMessageStok, updateNikRetur, updateSuccessStok } from "../../../../state/StokSlice";
+import { gasRetur, gasStok, historyStok, updateCountReturMoney, updateCountReturNew,  updateNikRetur} from "../../../../state/StokSlice";
 
 function ModalReturStok() {
     const stokState = useSelector(state => state.stok)
@@ -89,13 +89,13 @@ function ModalReturStok() {
                             <div className="grid items-center md:grid-cols-2">
                                 <h2 className="font-medium">Jumlah Retur Baru</h2>
                                 <label className="input truncate border-none flex place-self-center gap-2 before:bg-black relative before:absolute before:w-full before:h-0.5 before:bottom-0 before:left-0">
-                                    <input defaultValue={stokState.dataRetur.countReturNew} onChange={handleCountReturNewInputChange} type="text" className="input border-none rounded-none w-full text-center" placeholder="Jumlah Retur" required/>
+                                    <input defaultValue={stokState.dataRetur.countReturNew} onChange={handleCountReturNewInputChange} type="text" className="input border-none rounded-none w-full text-center" placeholder="Jumlah Retur"/>
                                 </label>
                             </div>
                             <div className="grid items-center md:grid-cols-2">
                                 <h2 className="font-medium">Jumlah Retur Uang</h2>
                                 <label className="input truncate border-none flex place-self-center gap-2 before:bg-black relative before:absolute before:w-full before:h-0.5 before:bottom-0 before:left-0">
-                                    <input defaultValue={stokState.dataRetur.countReturMoney} onChange={handleCountReturMoneyInputChange} type="text" className="input border-none rounded-none w-full text-center" placeholder="Jumlah Retur" required/>
+                                    <input defaultValue={stokState.dataRetur.countReturMoney} onChange={handleCountReturMoneyInputChange} type="text" className="input border-none rounded-none w-full text-center" placeholder="Jumlah Retur"/>
                                 </label>
                             </div>
                             <div className="modal-action">
