@@ -72,18 +72,18 @@ function Stok() {
     useEffect(() => {
         
         const timer = setTimeout(() => {
-            if (stokState.successRetur) {
-                document.getElementById('stok_retur_modal').close()
-            }
+            // if (stokState.successRetur) {
+            //     document.getElementById('stok_retur_modal').close()
+            // }
             dispatch(updateSuccessRetur(null))
         }, 3000)
         return () => clearTimeout(timer)
-    }, [stokState.successRetur])
+    }, [stokState.successRetur===false])
 
     useEffect(() => {
         
         const timer = setTimeout(() => {
-            if (stokState.successRetur) {
+            if (stokState.successAdd) {
                 document.getElementById('stok_add_modal').close()
             }
             dispatch(updateSuccessAddStok(null))

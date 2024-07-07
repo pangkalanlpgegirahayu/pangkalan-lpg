@@ -27,7 +27,7 @@ const transaction = async (user, request) => {
     let params = [transactionRequest.nik];
     const [resultData, field] = await databaseQuery(query, params)
 
-    if(resultData.length < 1){
+    if (resultData.length < 1) {
         throw new ResponseError(400, "Konsumen tidak ditemukan");
     }
 
@@ -35,23 +35,23 @@ const transaction = async (user, request) => {
     params = [namaGas];
     const [resultData3, field3] = await databaseQuery(query, params)
 
-    if(!resultData3.at(0)){
+    if (!resultData3.at(0)) {
         throw new ResponseError(400, "Tidak ada stok");
     }
 
-    if(resultData3.at(0).sisa<transactionRequest.countBuy){
+    if (resultData3.at(0).sisa < transactionRequest.countBuy) {
         throw new ResponseError(400, "Jumlah pembelian melebihi stok");
     }
 
-    if(resultData.at(0).tipe == 'RUMAH_TANGGA'){
-        if(transactionRequest.countBuy>1){
+    if (resultData.at(0).tipe == 'RUMAH_TANGGA') {
+        if (transactionRequest.countBuy > 1) {
             throw new ResponseError(400, "Pembelian tidak valid untuk subsidi Rumah Tangga");
         }
         query = "SELECT count(*) AS jumlah FROM pembelian_gas AS a JOIN detail_pembelian AS b ON a.id = b.id_pembelian WHERE a.id_konsumen = ? AND b.id_detail_pengiriman = ?";
         params = [resultData.at(0).id, resultData3.at(0).id];
         const [resultData7, field7] = await databaseQuery(query, params);
 
-        if(resultData7.at(0).jumlah == 1){
+        if (resultData7.at(0).jumlah == 1) {
             throw new ResponseError(400, "Pelanggan sudah melakukan pembelian maksimal");
         }
 
@@ -61,24 +61,24 @@ const transaction = async (user, request) => {
 
         const dataHouse = !resultData8.at(0) ? 0 : resultData8.at(0).jumlah
 
-        if(((!resultData8.at(0) ? 0 : resultData8.at(0).jumlah)/resultData3.at(0).jumlah*100) >= 80){
+        if (((!resultData8.at(0) ? 0 : resultData8.at(0).jumlah) / resultData3.at(0).jumlah * 100) >= 80) {
             throw new ResponseError(400, "Pembelian Rumah Tangga sudah mencapai maksimal");
         }
 
-        if((dataHouse+transactionRequest.countBuy)/resultData3.at(0).jumlah > 80){
+        if ((dataHouse + transactionRequest.countBuy) / resultData3.at(0).jumlah > 80) {
             throw new ResponseError(400, "Jumlah pembelian terlalu besar");
         }
     }
 
-    if(resultData.at(0).tipe == 'USAHA'){
-        if(transactionRequest.countBuy>5){
+    if (resultData.at(0).tipe == 'USAHA') {
+        if (transactionRequest.countBuy > 5) {
             throw new ResponseError(400, "Pembelian tidak valid untuk subsidi Usaha");
         }
         query = "SELECT SUM(b.jumlah) AS jumlah FROM pembelian_gas AS a JOIN detail_pembelian AS b ON a.id = b.id_pembelian WHERE a.id_konsumen = ? AND b.id_detail_pengiriman = ?";
         params = [resultData.at(0).id, resultData3.at(0).id];
         const [resultData7, field7] = await databaseQuery(query, params);
 
-        if(resultData7.at(0).jumlah == 5){
+        if (resultData7.at(0).jumlah == 5) {
             throw new ResponseError(400, "Pelanggan sudah melakukan pembelian maksimal");
         }
 
@@ -88,13 +88,13 @@ const transaction = async (user, request) => {
 
         const dataBusiness = !resultData8.at(0) ? 0 : resultData8.at(0).jumlah
 
-        
 
-        if(((!resultData8.at(0) ? 0 : resultData8.at(0).jumlah)/resultData3.at(0).jumlah*100) >= 20){
+
+        if (((!resultData8.at(0) ? 0 : resultData8.at(0).jumlah) / resultData3.at(0).jumlah * 100) >= 20) {
             throw new ResponseError(400, "Pembelian Usaha sudah mencapai maksimal");
         }
 
-        if((dataBusiness+transactionRequest.countBuy)/resultData3.at(0).jumlah > 20){
+        if ((dataBusiness + transactionRequest.countBuy) / resultData3.at(0).jumlah > 20) {
             throw new ResponseError(400, "Jumlah pembelian terlalu besar");
         }
     }
@@ -103,7 +103,7 @@ const transaction = async (user, request) => {
     params = [namaGas];
     const [resultData5, field5] = await databaseQuery(query, params)
 
-    if(resultData5.length == 0){
+    if (resultData5.length == 0) {
         throw new ResponseError(400, "Harga belum di set");
     }
 
@@ -111,7 +111,7 @@ const transaction = async (user, request) => {
     params = [resultData3.at(0).sisa - transactionRequest.countBuy, resultData3.at(0).id];
     const [resultData6, field6] = await databaseQuery(query, params)
 
-    if(resultData6.affectedRows < 1){
+    if (resultData6.affectedRows < 1) {
         throw new ResponseError(400, "Gagal menambah transaksi");
     }
 
@@ -119,7 +119,7 @@ const transaction = async (user, request) => {
     params = [transactionRequest.inputDate, resultData.at(0).id, user.id];
     const [resultData2, field2] = await databaseQuery(query, params)
 
-    if(resultData2.affectedRows < 1){
+    if (resultData2.affectedRows < 1) {
         throw new ResponseError(400, "Gagal menambah transaksi");
     }
 
@@ -127,7 +127,7 @@ const transaction = async (user, request) => {
     params = [resultData2.insertId, transactionRequest.countBuy, resultData3.at(0).id, resultData5.at(0).id];
     const [resultData4, field4] = await databaseQuery(query, params)
 
-    if(resultData4.affectedRows < 1){
+    if (resultData4.affectedRows < 1) {
         throw new ResponseError(400, "Gagal menambah transaksi");
     }
 
@@ -136,7 +136,7 @@ const transaction = async (user, request) => {
         nama: resultData.at(0).nama,
         tipe: resultData.at(0).tipe,
         jumlah: transactionRequest.countBuy,
-        total: transactionRequest.countBuy*resultData5.at(0).harga_jual,
+        total: transactionRequest.countBuy * resultData5.at(0).harga_jual,
     }
 }
 
@@ -154,7 +154,6 @@ const retur = async (request) => {
 
     const namaGas = 'LPG3KG';
     
-
     let query = "SELECT * FROM `konsumen` WHERE nik = ?";
     let params = [returRequest.nik]
 
@@ -164,7 +163,8 @@ const retur = async (request) => {
         throw new ResponseError(400, "NIK tidak ada");
     }
 
-    query = "SELECT b.id, b.jumlah FROM `pembelian_gas` AS a JOIN `detail_pembelian` AS b JOIN `gas` AS c ON a.id = b.id_pembelian AND b.id_gas = c.id WHERE a.id_konsumen = ? AND b.id_detail_pengiriman = (SELECT id FROM `detail_pengiriman` WHERE nama_gas = ? ORDER BY id DESC LIMIT 1) AND c.nama = ? ORDER BY a.id DESC LIMIT 1"
+
+    query = "SELECT b.id AS id, b.id_gas AS id_gas, b.jumlah AS jumlah FROM `pembelian_gas` AS a JOIN `detail_pembelian` AS b JOIN `gas` AS c ON a.id = b.id_pembelian AND b.id_gas = c.id WHERE a.id_konsumen = ? AND b.id_detail_pengiriman = (SELECT id FROM `detail_pengiriman` WHERE nama_gas = ? ORDER BY id DESC LIMIT 1) AND c.nama = ? ORDER BY a.id DESC LIMIT 1"
     params = [resultData.at(0).id, namaGas, namaGas];
     const [resultData2, field2] = await databaseQuery(query, params)
     if (resultData2.length == 0) {
@@ -174,21 +174,22 @@ const retur = async (request) => {
     query = "SELECT * FROM `detail_pengiriman` WHERE nama_gas = ? ORDER BY id DESC LIMIT 1"
     params = [namaGas];
     let [resultData3, field3] = await databaseQuery(query, params)
-    if (resultData3.at(0).sisa == 0) {
+    if ((!resultData3.at(0) ? 0 : resultData3.at(0).sisa) == 0) {
         throw new ResponseError(400, "Tidak ada gas");
     }
 
-    if (returRequest.countReturNew > resultData3.at(0).sisa) {
+
+    if (Number(returRequest.countReturNew) > resultData3.at(0).sisa) {
         throw new ResponseError(400, "Stok tidak mencukupi");
     }
 
-    if (returRequest.countReturNew + returRequest.countReturMoney != resultData2.at(0).jumlah){
+    if (Number(returRequest.countReturNew) + Number(returRequest.countReturMoney) > resultData2.at(0).jumlah) {
         throw new ResponseError(400, "Permintaan jumlah retur tidak sesuai pembelian");
     }
 
-    if (returRequest.countReturNew != 0) {
+    if (Number(returRequest.countReturNew) != 0) {
         query = "UPDATE `detail_pengiriman` SET sisa=?, retur=?  WHERE id = ?"
-        params = [resultData3.at(0).sisa - returRequest.countReturNew, resultData3.at(0).retur + returRequest.countReturNew, resultData3.at(0).id];
+        params = [resultData3.at(0).sisa - Number(returRequest.countReturNew), resultData3.at(0).retur + Number(returRequest.countReturNew), resultData3.at(0).id];
         const [resultData4, field4] = await databaseQuery(query, params)
         if (resultData4.affectedRows < 1) {
             throw new ResponseError(400, "Galat");
@@ -199,23 +200,41 @@ const retur = async (request) => {
     params = [resultData3.at(0).id];
     [resultData3, field3] = await databaseQuery(query, params)
 
-    if(returRequest.countReturMoney != 0){
+    if (Number(returRequest.countReturMoney) != 0) {
         query = "UPDATE `detail_pengiriman` SET retur=? WHERE id = ?"
-        params = [resultData3.at(0).sisa + returRequest.countReturMoney, resultData3.at(0).id];
+        params = [resultData3.at(0).sisa + Number(returRequest.countReturMoney), resultData3.at(0).id];
         const [resultData4, field4] = await databaseQuery(query, params)
         if (resultData4.affectedRows < 1) {
             throw new ResponseError(400, "Galat");
         }
 
         query = "UPDATE `detail_pembelian` SET jumlah=? WHERE id = ?"
-        params = [resultData2.at(0).jumlah - returRequest.countReturMoney, resultData2.at(0).id];
+        params = [resultData2.at(0).jumlah - Number(returRequest.countReturMoney), resultData2.at(0).id];
         const [resultData5, field5] = await databaseQuery(query, params)
         if (resultData4.affectedRows < 1) {
             throw new ResponseError(400, "Galat");
         }
     }
 
-    return "Berhasil Retur"
+    query = "SELECT * FROM `gas` WHERE `id` = ?  ORDER BY `id` DESC LIMIT 1"
+    params = [resultData2.at(0).id_gas];
+    const [resultData6, field6] = await databaseQuery(query, params)
+
+    if(!resultData6.at(0)){
+        throw new ResponseError(400, "Gas belum di set up");
+    }
+
+    
+
+    return {
+        nik: returRequest.nik,
+        nama: resultData.at(0).nama,
+        tipe: resultData.at(0).tipe,
+        pembelianAwal: resultData2.at(0).jumlah,
+        jumlahTukarBaru: returRequest.countReturNew,
+        jumlahTukarUang: returRequest.countReturMoney,
+        biayaTukarUang: Number(returRequest.countReturMoney) * resultData6.at(0).harga_jual,
+    }
 }
 
 const stok = async (request) => {
@@ -230,7 +249,7 @@ const stok = async (request) => {
     const [resultData2, field2] = await databaseQuery(query, params)
 
     query = "SELECT SUM(jumlah) AS total_terjual FROM `detail_pembelian` WHERE id_detail_pengiriman=?";
-    params = [!resultData.at(0)?0:resultData.at(0).id];
+    params = [!resultData.at(0) ? 0 : resultData.at(0).id];
     const [resultData3, field3] = await databaseQuery(query, params)
 
     query = "SELECT SUM(a.jumlah*b.harga_jual) AS totalKeuntungan FROM `detail_pembelian` AS a JOIN `gas` AS b ON a.id_gas = b.id WHERE b.nama = ?";
@@ -238,13 +257,13 @@ const stok = async (request) => {
     const [resultData4, field4] = await databaseQuery(query, params)
 
     return {
-        totalStok: !resultData.at(0)?0:resultData.at(0).jumlah,
-        totalKeuntungan: !resultData4.at(0)?0:resultData4.at(0).totalKeuntungan,
-        stok: !resultData.at(0)?0:resultData.at(0).sisa,
-        retur: !resultData.at(0)?0:resultData.at(0).retur,
-        sold: !resultData3.at(0)?0:resultData3.at(0).total_terjual,
-        hargaBeli: !resultData2.at(0)?0:resultData2.at(0).harga_beli,
-        hargaJual: !resultData2.at(0)?0:resultData2.at(0).harga_jual,
+        totalStok: !resultData.at(0) ? 0 : resultData.at(0).jumlah,
+        totalKeuntungan: !resultData4.at(0) ? 0 : resultData4.at(0).totalKeuntungan,
+        stok: !resultData.at(0) ? 0 : resultData.at(0).sisa,
+        retur: !resultData.at(0) ? 0 : resultData.at(0).retur,
+        sold: !resultData3.at(0) ? 0 : resultData3.at(0).total_terjual,
+        hargaBeli: !resultData2.at(0) ? 0 : resultData2.at(0).harga_beli,
+        hargaJual: !resultData2.at(0) ? 0 : resultData2.at(0).harga_jual,
     }
 }
 
@@ -260,22 +279,22 @@ const add = async (user, request) => {
     params = [namaGas]
 
     const [resultData4, field4] = await databaseQuery(query, params)
-    
-    if ((!resultData4.at(0)? 0 : resultData4.at(0).sisa)>0) {
+
+    if ((!resultData4.at(0) ? 0 : resultData4.at(0).sisa) > 0) {
         throw new ResponseError(400, "Tidak bisa menambah stok sebelum habis")
     }
 
     query = "INSERT INTO `pengiriman_gas`(`tanggal`, `informasi`, `id_user`) VALUES (?,?,?)";
     params = [addRequest.inputDate, addRequest.information ?? null, user.id]
     const [resultData, field] = await databaseQuery(query, params)
-    
+
     if (resultData.affectedRows < 1) {
         throw new ResponseError(400, "Gagal menambah stok")
     }
 
     query = "INSERT INTO `detail_pengiriman`(`nama_gas`, `id_pengiriman`, `jumlah`, `sisa`) VALUES (?,?,?,?)";
     params = [namaGas, resultData.insertId, addRequest.countStok, addRequest.countStok]
-    
+
     const [resultData2, field2] = await databaseQuery(query, params)
     if (resultData2.affectedRows < 1) {
         throw new ResponseError(400, "Gagal menambah stok")
@@ -378,7 +397,7 @@ const deleteStok = async (stokId) => {
     let params = [stokId]
 
     const [resultData, field] = await databaseQuery(query, params)
-    
+
     if (resultData.length !== 1) {
         throw new ResponseError(400, "Data tidak ada")
     }
@@ -387,7 +406,7 @@ const deleteStok = async (stokId) => {
     params = [stokId]
 
     const [resultData2, field2] = await databaseQuery(query, params)
-    
+
     if (resultData2.length != 0) {
         throw new ResponseError(400, "Tidak bisa dihapus")
     }
@@ -396,7 +415,7 @@ const deleteStok = async (stokId) => {
     params = [stokId]
 
     const [resultData3, field3] = await databaseQuery(query, params)
-    
+
     if (resultData2.affectedRows < 1) {
         throw new ResponseError(400, "Error");
     }
@@ -501,7 +520,7 @@ const history = async (user, request) => {
     }
 
     const [resultData2, field2] = await databaseQuery(query2, params2)
-    
+
     const totalItem = resultData2.at(0).totalItem
     if (resultData2.at(0).totalItem == 0) {
         throw new ResponseError(400, "Data tidak dalam rentang");
@@ -535,7 +554,7 @@ const history = async (user, request) => {
 
     const [resultData, field] = await databaseQuery(query, params)
 
-    
+
     const paging = {}
     paging.page = requestHistory.page
     paging.total_item = totalItem
