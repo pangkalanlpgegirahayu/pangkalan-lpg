@@ -32,24 +32,8 @@ function ModalReturStok() {
             countReturMoney: stokState.dataRetur.countReturMoney,
         }
 
-        // if(prepData.countReturMoney==0 && prepData.countReturNew==0){
-        //     dispatch(updateMessageStok("Data Retur Tidak Boleh Kosong Seluruhnya"))
-        //     dispatch(updateErrorStok(true))
-        //     document.getElementById('stok_retur_modal').close()
-        //     return
-        // }
-
-        // if(prepData.nik.length == 0){
-        //     dispatch(updateMessageStok("NIK Tidak Boleh Kosong"))
-        //     dispatch(updateErrorStok(true))
-        //     document.getElementById('stok_retur_modal').close()
-        //     return
-        // }
-
         dispatch(gasRetur(prepData)).then(result => {
             if (!result.error) {
-                
-                // dispatch(updateMessageStok("Berhasil menambah stok"))
                 let prepData = {
                     token: userState.data.token
                 }

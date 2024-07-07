@@ -1,5 +1,3 @@
-import Pertamina from "../../assets/Pertamina.svg"
-import PertaminaPNG from "../../assets/PertaminaPNG.png"
 import { useDispatch, useSelector } from "react-redux"
 import { Form, Link, redirect, useNavigate } from "react-router-dom"
 import { loginUser, updateErrorUser, updateMessageUser, updatePasswordUser, updateSuccessLogoutUser, updateUsernameUser } from "../../state/UserSlice";

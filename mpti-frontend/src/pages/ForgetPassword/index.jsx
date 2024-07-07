@@ -4,7 +4,6 @@ import { FORGET_PASSWORD_PROGRESS } from "../../state/ForgetPasswordSlice";
 import ForgetPasswordEmail from "./ForgetPasswordEmail";
 import ForgetPasswordCode from "./ForgetPasswordCode";
 import ForgetPasswordNewPass from "./ForgetPasswordNewPass";
-import Pertamina from "../../assets/Pertamina.svg"
 import { useEffect } from "react";
 import ModalForgetPasswordChange from "./components/ModalForgetPasswordChange";
 

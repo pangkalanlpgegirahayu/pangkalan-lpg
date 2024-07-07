@@ -80,11 +80,11 @@ function DashboardContent() {
                         <div className="flex flex-col gap-3 w-44 pl-5">
                             <div className="indicator">
                                 <span className="indicator-item indicator-start indicator-middle badge bg-[#4AAE64] z-0"></span>
-                                <div className="px-5 place-items-center text-wrap"><span className="px-4">{customerHouse}</span>Rumah Tangga</div>
+                                <div className="px-5 place-items-center text-wrap"><span className="px-4">{Number(customerHouse??0)}</span>Rumah Tangga</div>
                             </div>
                             <div className="indicator">
                                 <span className="indicator-item indicator-start indicator-middle badge bg-[#a6e8b8] z-0"></span>
-                                <div className="px-5 place-items-center text-wrap"><span className="px-4">{customerBusiness}</span>Usaha</div>
+                                <div className="px-5 place-items-center text-wrap"><span className="px-4">{Number(customerBusiness??0)}</span>Usaha</div>
                             </div>
                         </div>
                     </div>

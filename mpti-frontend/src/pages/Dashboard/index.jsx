@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, Outlet, redirect, useLocation, useNavigate } from 'react-router-dom'
 import { updateErrorStok } from '../../state/StokSlice';
 import axios from 'axios';
-
-import PertaminaPNG from "../../assets/PertaminaPNG.png"
 import EgiRahayu from "../../assets/EgiRahayu.svg"
 
 import { logoutUser, updateSuccessLoginUser, updateSuccessLogoutUser } from '../../state/UserSlice';
