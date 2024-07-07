@@ -93,7 +93,7 @@ function Login() {
             <div className="bg-gradient-to-45 from-white to-[#a8f0bb] ">
                 <section className="flex min-h-screen justify-center w-full items-center flex-col lg:flex-row ">
                     <div className="flex items-center">
-                        <img src={EgiRahayu} className="max-w-96 p-10" alt="" />
+                        <img src={EgiRahayu} className="p-10" alt="" />
                         {/* <div>
                             <h1 className="font-semibold text-3xl">Pangkalan LPG</h1>
                             <h1 className="font-semibold text-3xl">Egi Rahayu</h1>
@@ -117,14 +117,14 @@ function Login() {
                                 <span className="material-symbols-outlined">
                                     person
                                 </span>
-                                <input onChange={handleUsernameInputChange} type="text" className="grow" placeholder="Username" />
+                                <input onChange={handleUsernameInputChange} type="text" name="username" className="grow" placeholder="Username" />
                             </label>
                             <p className="w-full text-start max-w-96 pt-2">Kata Sandi</p>
                             <label className="input input-bordered flex items-center gap-2 rounded-full w-full max-w-96 overflow-x-auto">
                                 <span className="material-symbols-outlined">
                                     lock
                                 </span>
-                                <input onChange={handlePasswordInputChange} type="password" className="grow" placeholder="●●●●●●" />
+                                <input onChange={handlePasswordInputChange} type="password" name="password" className="grow" placeholder="●●●●●●" />
                             </label>
                             <div className="flex justify-between w-full max-w-96">
                                 <div className="form-control">

@@ -169,7 +169,7 @@ function TableHistoryStok() {
                                             <tr><td colSpan={6} className="text-center">Tidak ada data</td></tr>
                                         ) : (
                                             stokState.historyData.list?.map((data, index) => {
-                                                const dataIndex = (5 * stokState.historyData.currentPage - ((5 - index - 1)))
+                                                const dataIndex = (5 * stokState.historyData.paging.page - ((5 - index - 1)))
                                                 return (
                                                     <tr key={index}>
                                                         <td>{dataIndex}</td>
@@ -185,22 +185,24 @@ function TableHistoryStok() {
                                 </tbody>
                             </table>
                         </div>
-                        <div className="card-actions justify-center">
-                            <div className="join">
-                                {
-                                    stokState.historyData.paging?.prev &&
-                                    <button className="join-item btn" onClick={handleHistoryPrevPage}>«</button>
-                                }
+                        {stokState.historyData.list?.length != 0 &&
+                            <div className="card-actions justify-center">
+                                <div className="join">
+                                    {
+                                        stokState.historyData.paging?.prev &&
+                                        <button className="join-item btn" onClick={handleHistoryPrevPage}>«</button>
+                                    }
 
-                                <button className="join-item btn">{stokState.historyData.currentPage}</button>
+                                    <button className="join-item btn">{stokState.historyData.paging.page}</button>
 
-                                {
-                                    stokState.historyData.paging?.next &&
-                                    <button className="join-item btn" onClick={handleHistoryNextPage}>»</button>
-                                }
+                                    {
+                                        stokState.historyData.paging?.next &&
+                                        <button className="join-item btn" onClick={handleHistoryNextPage}>»</button>
+                                    }
 
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>

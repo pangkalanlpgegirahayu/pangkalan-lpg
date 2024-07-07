@@ -72,7 +72,13 @@ function Sales() {
                     startDate: data.datetime.slice(0, 11) + "00:00",
                     endDate: data.datetime.slice(0, 11) + "23:59"
                 }
-                dispatch(getSales(dataPrep))
+                dispatch(getSales(dataPrep)).then(result => {
+                    if (!result.error) {
+                        dispatch(updatesuccessGetDataSales(true));
+                    } else {
+                        dispatch(updatesuccessGetDataSales(false))
+                    }
+                })
             })
             .catch(error => {
 
@@ -226,10 +232,10 @@ function Sales() {
                                                 <tr><td colSpan={6} className="text-center">Tidak ada data</td></tr>
                                             ) : (
                                                 salesState.historyData.list?.map((data, index) => {
-                                                    const dataIndex = (5 * salesState.historyData.currentPage - ((5 - index - 1)))
+
                                                     return (
                                                         <tr key={index}>
-                                                            <td>{dataIndex}</td>
+                                                            <td>{(5 * salesState.historyData.paging.page - ((5 - index - 1)))}</td>
                                                             <td>{data.nama_pembeli}</td>
                                                             <td>{data.id_pengiriman}</td>
                                                             <td>{data.tanggal}</td>
@@ -246,21 +252,23 @@ function Sales() {
 
                                 </table>
                             </div>
-                            <div className="card-actions justify-center">
-                                <div className="join">
-                                    {
-                                        salesState.historyData.paging?.prev &&
-                                        <button className="join-item btn" onClick={handleHistoryPrevPage}>«</button>
-                                    }
+                            {salesState.historyData.list?.length != 0 &&
+                                <div className="card-actions justify-center">
+                                    <div className="join">
+                                        {
+                                            salesState.historyData.paging?.prev &&
+                                            <button className="join-item btn" onClick={handleHistoryPrevPage}>«</button>
+                                        }
 
-                                    <button className="join-item btn">{salesState.historyData.currentPage}</button>
+                                        <button className="join-item btn">{salesState.historyData.paging.page}</button>
 
-                                    {
-                                        salesState.historyData.paging?.next &&
-                                        <button className="join-item btn" onClick={handleHistoryNextPage}>»</button>
-                                    }
+                                        {
+                                            salesState.historyData.paging?.next &&
+                                            <button className="join-item btn" onClick={handleHistoryNextPage}>»</button>
+                                        }
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>

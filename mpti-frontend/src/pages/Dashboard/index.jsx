@@ -6,6 +6,7 @@ import axios from 'axios';
 import EgiRahayu from "../../assets/EgiRahayu.svg"
 
 import { logoutUser, updateSuccessLoginUser, updateSuccessLogoutUser } from '../../state/UserSlice';
+import ModalLogout from './Components/ModalLogout';
 
 
 
@@ -97,7 +98,7 @@ function Dashboard() {
                                 <Link className="btn btn-ghost text-xl lg:hidden truncate"><img src={EgiRahayu} className="w-28" alt="" /></Link>
                             </div>
                             <div className="flex-none hidden md:block">
-                                <button className="btn btn-ghost" onClick={logout}>
+                                <button className="btn btn-ghost" onClick={()=> document.getElementById('logout_modal').showModal()}>
                                     <span className="material-symbols-outlined">
                                         logout
                                     </span>
@@ -113,7 +114,7 @@ function Dashboard() {
                     </div>
                     <div className="drawer-side top-[4rem] lg:top-0 shadow-xl">
                         <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-                        <ul className="menu p-4 w-56 min-h-full bg-[#fafafa] text-base-content gap-2">
+                        <ul className="menu p-4 min-h-full bg-[#fafafa] text-base-content gap-2">
                             {/* Sidebar content here */}
                             <li className="lg:block hidden">
                                 <div>
@@ -198,8 +199,9 @@ function Dashboard() {
                                 </NavLink>
 
                             </li>
+                            
                             <li className="md:hidden mt-4">
-                                <button className="btn btn-ghost" onClick={logout}>
+                                <button className="btn btn-ghost" onClick={()=> document.getElementById('logout_modal').showModal()}>
                                     <span className="material-symbols-outlined">
                                         logout
                                     </span>
@@ -252,7 +254,7 @@ function Dashboard() {
                 </div>
             }
             
-
+            <ModalLogout logoutFunction={logout}/>
         </>
     )
 }
