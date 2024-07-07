@@ -89,6 +89,11 @@ function ModalReturStok() {
                                     </div>
                                     <hr className="my-2 border border-blue-gray-50" />
                                     <div className="grid grid-cols-2">
+                                        <p>Jumlah pembelian sebelumnya :</p>
+                                        <p>{stateRetur?.pembelianAwal}</p>
+                                    </div>
+                                    <hr className="my-2 border border-blue-gray-50" />
+                                    <div className="grid grid-cols-2">
                                         <p>Jumlah uang pengembalian :</p>
                                         <p>{new Intl.NumberFormat('id-ID', { style: "currency", currency: "IDR" }).format(stateRetur?.biayaTukarUang)}</p>
                                     </div>
