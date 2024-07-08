@@ -208,7 +208,7 @@ const CustomerSlice = createSlice({
             })
             .addCase(customerRegister.fulfilled, (state, action) => {
                 state.loading = false
-                state.error = false
+                // state.error = false
                 state.message = "Berhasil mendaftarkan pelanggan"
                 state.successRegister = true
                 state.success = true
@@ -218,7 +218,7 @@ const CustomerSlice = createSlice({
             })
             .addCase(customerRegister.rejected, (state, action) => {
                 state.loading = false
-                state.error = true
+                // state.error = true
                 state.message = action.payload
                 state.successRegister = false
                 state.success = false
