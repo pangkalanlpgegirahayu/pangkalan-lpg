@@ -12,7 +12,6 @@ dist
 dist-ssr
 *.local
 
-.env
 token.json
 credentials.json
 
