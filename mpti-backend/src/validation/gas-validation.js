@@ -97,11 +97,13 @@ const returGasStokValidation = Joi.object({
         "string.pattern.base": "Format NIK wajib berisi angka",
         "any.required": "NIK wajib diisi"
     }),
-    countReturNew: Joi.string().pattern(new RegExp("^[0-9]")).allow(null, '').optional().messages({
-        "string.base": "Format retur tabung baru tidak menerima nilai negative atau kosong",
+    countReturNew: Joi.number().allow(null).positive().optional().messages({
+        "number.base": "Format retur tabung baru tidak menerima nilai negatif atau kosong",
+        "number.positive": "Format retur tabung baru tidak menerima nilai negatif atau kosong",
     }),
-    countReturMoney: Joi.string().pattern(new RegExp("^[0-9]")).allow(null, '').optional().messages({
-        "string.base": "Format retur uang tidak menerima nilai negative atau kosong",
+    countReturMoney: Joi.number().allow(null).positive().optional().messages({
+        "number.base": "Format retur tabung baru tidak menerima nilai negatif atau kosong",
+        "number.positive": "Format retur tabung baru tidak menerima nilai negatif atau kosong",
     }),
 })
 

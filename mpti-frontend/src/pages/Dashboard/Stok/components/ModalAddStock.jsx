@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { Form, useNavigate } from "react-router-dom"
-import { addStok, gasStok, historyStok, updateErrorStok, updateInformationStok, updateInputDateStok, updateMessageStok, updateSuccessAddStok, updateSuccessStok } from "../../../../state/StokSlice";
+import { addStok, gasStok, historyStok, updateCountStok, updateErrorStok, updateInformationStok, updateInputDateStok, updateMessageStok, updateSuccessAddStok, updateSuccessStok } from "../../../../state/StokSlice";
 import { useEffect } from "react";
 import { updateSuccessLogoutUser } from "../../../../state/UserSlice";
 
@@ -15,7 +15,6 @@ function ModalAddStock() {
     const handleCountStokInputChange = (event) => {
         event.target.value = event.target.value.replace(/[^0-9]/g, '');
         event.target.value = event.target.value.replace(/^(0)/g, '');
-
         dispatch(updateCountStok(event.target.value))
     }
     const handleInformationInputChange = (event) => {

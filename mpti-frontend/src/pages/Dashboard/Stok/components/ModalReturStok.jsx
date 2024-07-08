@@ -1,13 +1,17 @@
 import { useDispatch, useSelector } from "react-redux"
 import { Form } from "react-router-dom"
 import { gasRetur, gasStok, historyStok, updateCountReturMoney, updateCountReturNew, updateNikRetur, updateSuccessRetur } from "../../../../state/StokSlice";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { updateSuccessLogoutUser } from "../../../../state/UserSlice";
 
 function ModalReturStok() {
     const stokState = useSelector(state => state.stok)
     const userState = useSelector(state => state.user)
     const [stateRetur, setStateRetur] = useState({});
+
+    const refCountReturMoney = useRef();
+    const refCountReturNew = useRef();
+
     const dispatch = useDispatch();
 
     const handleCountReturNewInputChange = (event) => {
@@ -31,8 +35,8 @@ function ModalReturStok() {
         const prepData = {
             token: userState.data.token,
             nik: stokState.dataRetur.nik,
-            countReturNew: stokState.dataRetur.countReturNew,
-            countReturMoney: stokState.dataRetur.countReturMoney,
+            countReturNew: !refCountReturNew.current.disabled ? stokState.dataRetur.countReturNew : null,
+            countReturMoney: !refCountReturMoney.current.disabled ? stokState.dataRetur.countReturMoney : null,
         }
 
         dispatch(gasRetur(prepData)).then(result => {
@@ -41,8 +45,8 @@ function ModalReturStok() {
                 let prepData = {
                     token: userState.data.token
                 }
-                dispatch(gasStok(prepData)).then(result=>{
-                    if(result.payload === "Unauthorized"){
+                dispatch(gasStok(prepData)).then(result => {
+                    if (result.payload === "Unauthorized") {
                         dispatch(updateSuccessLogoutUser(true))
                         navigate("/login")
                     }
@@ -53,8 +57,8 @@ function ModalReturStok() {
                     startDate: stokState.historyData?.startDate,
                     endDate: stokState.historyData?.endDate
                 }
-                dispatch(historyStok(prepData)).then(result=>{
-                    if(result.payload === "Unauthorized"){
+                dispatch(historyStok(prepData)).then(result => {
+                    if (result.payload === "Unauthorized") {
                         dispatch(updateSuccessLogoutUser(true))
                         navigate("/login")
                     }
@@ -74,7 +78,7 @@ function ModalReturStok() {
             <div className="modal-box rounded-md">
                 {stokState.successRetur === true ? (
                     <>
-                        <div className="grid justify-items-center pt-14">
+                        <div className="grid justify-items-center">
                             <span className="material-symbols-outlined w-48 h-48 bg-[#4AAE64] text-9xl rounded-full flex justify-center items-center text-white">
                                 check
                             </span>
@@ -112,7 +116,7 @@ function ModalReturStok() {
 
                                 </div>
                                 <div className="overflow-x-auto">
-                                    <table className="table">
+                                    <table className="table text-center">
                                         <thead>
                                             <tr className="bg-base-200">
                                                 <th>Jumlah Retur Baru</th>
@@ -166,15 +170,27 @@ function ModalReturStok() {
                                 </label>
                             </div>
                             <div className="grid items-center md:grid-cols-2">
-                                <h2 className="font-medium">Jumlah Retur Baru</h2>
-                                <label className="input truncate border-none flex place-self-center gap-2 before:bg-black relative before:absolute before:w-full before:h-0.5 before:bottom-0 before:left-0">
-                                    <input defaultValue={stokState.dataRetur.countReturNew} onChange={handleCountReturNewInputChange} type="text" className="input border-none rounded-none w-full text-center" placeholder="Jumlah Retur" />
+
+                                <div className="form-control">
+                                    <label className="label cursor-pointer justify-start gap-3">
+                                        <input type="checkbox" className="checkbox checkbox-md" onChange={(event)=>event.target.checked?(refCountReturNew.current.disabled=false):(refCountReturNew.current.disabled=true)}/>
+                                        <span className="label-text">Retur Baru</span>
+                                    </label>
+                                </div>
+                                {/* <h2 className="font-medium">Jumlah Retur Baru</h2> */}
+                                <label className="input truncate input-bordered">
+                                    <input defaultValue={stokState.dataRetur.countReturNew} ref={refCountReturNew} disabled onChange={handleCountReturNewInputChange} type="text" className="input border-none rounded-none w-full text-center" placeholder="Jumlah Retur" />
                                 </label>
                             </div>
                             <div className="grid items-center md:grid-cols-2">
-                                <h2 className="font-medium">Jumlah Retur Uang</h2>
-                                <label className="input truncate border-none flex place-self-center gap-2 before:bg-black relative before:absolute before:w-full before:h-0.5 before:bottom-0 before:left-0">
-                                    <input defaultValue={stokState.dataRetur.countReturMoney} onChange={handleCountReturMoneyInputChange} type="text" className="input border-none rounded-none w-full text-center" placeholder="Jumlah Retur" />
+                                <div className="form-control">
+                                    <label className="label cursor-pointer justify-start gap-3">
+                                        <input type="checkbox" className="checkbox checkbox-md" onChange={(event)=>event.target.checked?(refCountReturMoney.current.disabled=false):(refCountReturMoney.current.disabled=true)}/>
+                                        <span className="label-text">Retur Uang</span>
+                                    </label>
+                                </div>
+                                <label className="input truncate input-bordered" >
+                                    <input defaultValue={stokState.dataRetur.countReturMoney} ref={refCountReturMoney} disabled onChange={handleCountReturMoneyInputChange} type="text" className="input border-none rounded-none w-full text-center" placeholder="Jumlah Retur" />
                                 </label>
                             </div>
                             <div className="modal-action">

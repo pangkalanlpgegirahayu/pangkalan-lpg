@@ -10,7 +10,7 @@ function ModalTransactionCustomer() {
             <div className="modal-box rounded-md">
                 {customerState.successTransaction ? (
                     <>
-                        <div className="grid justify-items-center py-14">
+                        <div className="grid justify-items-center">
                             <span className="material-symbols-outlined w-48 h-48 bg-[#4AAE64] text-9xl rounded-full flex justify-center items-center text-white">
                                 check
                             </span>
@@ -50,13 +50,13 @@ function ModalTransactionCustomer() {
                                         <tbody>
                                             <tr>
                                                 <td>LPG 3Kg</td>
-                                                <td>{customerState.transactionData.countBuy}</td>
+                                                <td>{customerState.transactionDataDone.jumlah}</td>
                                                 <td>{new Intl.NumberFormat('id-ID', { style: "currency", currency: "IDR" }).format(stokState?.dataStok?.priceSell)}</td>
-                                                <td>{new Intl.NumberFormat('id-ID', { style: "currency", currency: "IDR" }).format(stokState?.dataStok?.priceSell * customerState.transactionData.countBuy)}</td>
+                                                <td>{new Intl.NumberFormat('id-ID', { style: "currency", currency: "IDR" }).format(stokState?.dataStok?.priceSell * customerState.transactionDataDone.jumlah)}</td>
                                             </tr>
                                             <tr className="bg-base-300">
                                                 <th colSpan={3}>Total</th>
-                                                <td className="text-[1.2em]">{new Intl.NumberFormat('id-ID', { style: "currency", currency: "IDR" }).format(stokState?.dataStok?.priceSell * customerState.transactionData.countBuy)}</td>
+                                                <td className="text-[1.2em]">{new Intl.NumberFormat('id-ID', { style: "currency", currency: "IDR" }).format(stokState?.dataStok?.priceSell * customerState.transactionDataDone.jumlah)}</td>
                                             </tr>
 
                                         </tbody>
