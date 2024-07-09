@@ -128,6 +128,8 @@ const SalesSlice = createSlice({
             .addCase(getSales.rejected, (state, action) => {
                 state.loading = false;
                 state.error = true;
+                state.historyData.list = [];
+                state.historyData.paging = {};
                 // state.successGetData = false;
                 state.data.revenue = 0;
                 state.data.countSold = 0;
@@ -154,6 +156,7 @@ const SalesSlice = createSlice({
                 state.successGetData = false;
                 state.data.revenue = 0;
                 state.data.countSold = 0;
+                state.dataPrint = [];
                 state.message = action.payload;
             })
 })

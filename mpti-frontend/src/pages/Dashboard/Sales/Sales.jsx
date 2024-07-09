@@ -7,6 +7,7 @@ import * as XLSX from 'xlsx';
 import { getAllHistorySales, getSales, updateCurrentPageSales, updateEndDateSales, updateStartDateSales, updatesuccessGetDataSales } from "../../../state/SalesSlice";
 import axios from "axios";
 import { updateSuccessLogoutUser } from "../../../state/UserSlice";
+import LineChartSales from "./Components/LineChartSales";
 
 function Sales() {
     const salesState = useSelector(state => state.sales);
@@ -34,6 +35,13 @@ function Sales() {
         }
 
         dispatch(getSales(dataPrep)).then(result=>{
+            if(result.payload === "Unauthorized"){
+                dispatch(updateSuccessLogoutUser(true))
+                navigate("/login")
+            }
+        })
+        dispatch(getAllHistorySales(dataPrep)).then(result => {
+
             if(result.payload === "Unauthorized"){
                 dispatch(updateSuccessLogoutUser(true))
                 navigate("/login")
@@ -99,6 +107,14 @@ function Sales() {
                         dispatch(updateSuccessLogoutUser(true))
                         navigate("/login")
                     }
+                })
+                dispatch(getAllHistorySales(dataPrep)).then(result => {
+
+                    if(result.payload === "Unauthorized"){
+                        dispatch(updateSuccessLogoutUser(true))
+                        navigate("/login")
+                    }
+                    console.log(result.payload)
                 })
             })
             .catch(error => {
@@ -235,6 +251,7 @@ function Sales() {
                         <div className="flex gap-4 py-2 justify-between flex-col sm:flex-row">
                             <h2 className="card-title">Data Penjualan</h2>
                         </div>
+                        <LineChartSales print={salesState.dataPrint}/>
                         <div className="card-body bg-base-100 rounded-md shadow-sm">
                             <button className="btn bg-[#4AAE64] text-white hover:text-black" onClick={handleDonwloadHistory}>
                                 <span className="material-symbols-outlined">
@@ -304,6 +321,7 @@ function Sales() {
                     </div>
                 </div>
             </div>
+            
             {
                 salesState.successGetData === false &&
                 <div className="toast toast-end">
