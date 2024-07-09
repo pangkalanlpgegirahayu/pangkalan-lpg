@@ -247,13 +247,14 @@ function Sales() {
                             </div>
                         </div>
                     </div>
+                    <LineChartSales print={salesState.dataPrint}/>
                     <div className="card max-w-5xl overflow-x-auto rounded-none">
                         <div className="flex gap-4 py-2 justify-between flex-col sm:flex-row">
                             <h2 className="card-title">Data Penjualan</h2>
                         </div>
-                        <LineChartSales print={salesState.dataPrint}/>
+                        
                         <div className="card-body bg-base-100 rounded-md shadow-sm">
-                            <button className="btn bg-[#4AAE64] text-white hover:text-black" onClick={handleDonwloadHistory}>
+                            <button className="btn bg-[#4aae64] text-white hover:text-black" onClick={handleDonwloadHistory}>
                                 <span className="material-symbols-outlined">
                                     download
                                 </span>
