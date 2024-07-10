@@ -114,7 +114,6 @@ function Sales() {
                         dispatch(updateSuccessLogoutUser(true))
                         navigate("/login")
                     }
-                    console.log(result.payload)
                 })
             })
             .catch(error => {
