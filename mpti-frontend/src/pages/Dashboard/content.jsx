@@ -4,19 +4,20 @@ import { downloadHistoryStok, gasStok } from "../../state/StokSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { updateSuccessLogoutUser } from "../../state/UserSlice";
+import { Chart } from "chart.js";
 
 function DashboardContent() {
     const stokState = useSelector(state => state.stok)
     const userState = useSelector(state => state.user)
     const dateEnd = useRef();
-    const [customerHouse, setCustomerHouse] = useState(0)
-    const [customerType, setCustomerType] = useState({})
-    const [customerBusiness, setCustomerBusiness] = useState(0)
+    const customerGraf = useRef();
+    
     const dispatch = useDispatch();
 
     useEffect(() => {
         document.title = "Pangkalan LPG Egi Rahayu - Dashboard"
-        
+        let chartjes
+
         const prepData = {
             token: userState.data.token
         }
@@ -29,11 +30,11 @@ function DashboardContent() {
                 startDate.setDate(startDate.getDate() - 30 * 1);
                 const prepData = {
                     token: userState.data.token,
-                    startDate: startDate.toISOString().slice(0,11) + "00:00",
+                    startDate: startDate.toISOString().slice(0, 11) + "00:00",
                     endDate: data.datetime.slice(0, 11) + "23:59"
                 }
-                dispatch(downloadHistoryStok(prepData)).then(result=>{
-                    if(result.payload === "Unauthorized"){
+                dispatch(downloadHistoryStok(prepData)).then(result => {
+                    if (result.payload === "Unauthorized") {
                         dispatch(updateSuccessLogoutUser(true))
                         navigate("/login")
                     }
@@ -45,14 +46,66 @@ function DashboardContent() {
                 'Authorization': prepData.token
             }
         }).then(result => {
-            
-            setCustomerHouse(result.data.data.rumahTangga)
-            setCustomerBusiness(result.data.data.usaha)
-            
-            setCustomerType({
-                usaha: 360 - 360 * (Number(result.data.data.usaha) / (Number(result.data.data.rumahTangga) + Number(result.data.data.usaha))) - 4,
-            })
+
+            chartjes = new Chart(
+                customerGraf.current,
+                {
+                    type: 'doughnut',
+                    data: {
+
+                        labels: [`${result.data.data.rumahTangga ?? 0} Rumah Tangga`, `${result.data.data.usaha ?? 0} Usaha Mikro`],
+                        datasets: [
+                            {
+                                label: 'Jumlah penjualan',
+                                data: [result.data.data.rumahTangga, result.data.data.usaha],
+                                backgroundColor: [
+                                    '#4AAE64',
+                                    '#a6e8b8',
+                                ],
+                                hoverOffset: 4,
+                                
+
+                            }
+
+                        ]
+                    },
+                    plugins: [
+                        {
+                            id: "doughnutLabel",
+                            beforeDatasetsDraw(chart, args, pluginOptions) {
+                                const { ctx, data } = chart;
+                                ctx.save();
+                                const xCoor = chart.getDatasetMeta(0).data[0].x;
+                                const yCoor = chart.getDatasetMeta(0).data[0].y;
+                                ctx.font = 'bold 36px sans-serif';
+                                ctx.fillStyle = '#4AAE64';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.fillText(Number(result.data.data.rumahTangga) + Number(result.data.data.usaha), xCoor, yCoor);
+                            },
+
+                        },
+
+                    ]
+
+                    ,
+                    options: {
+                        cutout: "80%",
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'right',
+                            }
+                        }
+
+                    }
+
+                }
+            );
         })
+
+
+
 
     }, [])
 
@@ -61,11 +114,11 @@ function DashboardContent() {
         startDate.setDate(startDate.getDate() - 30 * event.target.value);
         const prepData = {
             token: userState.data.token,
-            startDate: startDate.toISOString().slice(0,11) + "00:00",
-            endDate: dateEnd.current.slice(0,11) + "23:59"
+            startDate: startDate.toISOString().slice(0, 11) + "00:00",
+            endDate: dateEnd.current.slice(0, 11) + "23:59"
         }
-        dispatch(downloadHistoryStok(prepData)).then(result=>{
-            if(result.payload === "Unauthorized"){
+        dispatch(downloadHistoryStok(prepData)).then(result => {
+            if (result.payload === "Unauthorized") {
                 dispatch(updateSuccessLogoutUser(true))
                 navigate("/login")
             }
@@ -77,27 +130,8 @@ function DashboardContent() {
             <div className="w-full py-2 gap-3 flex flex-col md:flex-row ">
                 <div className="card md:max-w-xl w-full bg-base-100 shadow-sm rounded-md">
                     <p className="py-1.5 px-3 bg-[#f9fafb]">Distribusi Konsumen</p>
-                    <div className="card-body max-w-3xl flex-col pt-4 sm:flex-row lg:pt-0 lg:flex-row gap-3 justify-around items-center h-96 md:h-full overflow-auto">
-                        <div className="w-48 max-h-48  h-full relative block">
-                            <div className={`radial-progress absolute text-[#4AAE64] font-bold text-4xl`} style={{ "--value": (Number(customerHouse) / (Number(customerBusiness) + Number(customerHouse))) * 100, "--size": "12rem" }} role="progressbar">
-
-                                {Number(customerHouse) + Number(customerBusiness)}
-                            </div>
-
-                            <div className={(`radial-progress absolute text-[#a6e8b8]`)} style={{ "--value": ((Number(customerBusiness) / (Number(customerBusiness) + Number(customerHouse))) * 100), "--size": "12rem", "rotate": `${customerType.usaha}deg` }} role="progressbar">
-
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-3 w-44 pl-5">
-                            <div className="indicator">
-                                <span className="indicator-item indicator-start indicator-middle badge bg-[#4AAE64] z-0"></span>
-                                <div className="px-5 place-items-center text-wrap"><span className="px-4">{Number(customerHouse??0)}</span>Rumah Tangga</div>
-                            </div>
-                            <div className="indicator">
-                                <span className="indicator-item indicator-start indicator-middle badge bg-[#a6e8b8] z-0"></span>
-                                <div className="px-5 place-items-center text-wrap"><span className="px-4">{Number(customerBusiness??0)}</span>Usaha</div>
-                            </div>
-                        </div>
+                    <div className="card-body max-w-3xl justify-center items-center overflow-auto">
+                        <canvas ref={customerGraf} className="max-h-64"></canvas>
                     </div>
                 </div>
                 <div className="flex flex-col gap-3 w-full">
@@ -137,7 +171,7 @@ function DashboardContent() {
                                     <option value={2}>2 bulan</option>
                                     <option value={3}>3 bulan</option>
                                 </select>
-                                
+
                             </div>
                             <div className="overflow-x-auto">
                                 <table className="table">
@@ -157,10 +191,10 @@ function DashboardContent() {
                                                 <tr><td colSpan={6} className="text-center">Tidak Ada Data</td></tr>
                                             ) : (
                                                 stokState.dataPrint?.map((data, index) => {
-                                    
+
                                                     return (
                                                         <tr key={index}>
-                                                            <td>{index+1}</td>
+                                                            <td>{index + 1}</td>
                                                             <td>{data.tanggal}</td>
                                                             <td>{data.jumlah}</td>
                                                             <td>{data.sisa}</td>
@@ -173,7 +207,7 @@ function DashboardContent() {
                                     </tbody>
                                 </table>
                             </div>
-                           
+
                         </div>
                     </div>
                 </div>
